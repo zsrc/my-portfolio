@@ -1,0 +1,55 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Projects from '../components/Projects.astro';
+import Writing from '../components/Writing.astro';
+import About from '../components/About.astro';
+import Experience from '../components/Experience.astro';
+import Contact from '../components/Contact.astro';
+---
+
+<Layout>
+  <!-- Nav -->
+  <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 px-8 py-5 flex justify-between items-center transition-colors duration-300">
+    <a href="#home" class="z-logo" aria-label="Home">
+      <svg width="20" height="24" viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 23.2727V19.7727L11 5.09091H0.0454546V0H19.0455V3.5L8.04545 18.1818H19V23.2727H0Z" fill="black"/>
+      </svg>
+    </a>
+    <ul class="flex gap-10 text-gray-500 font-medium" style="font-size: 20px; letter-spacing: -0.5px;">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#writing">Writing</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <Hero />
+    <Projects />
+    <div class="border-t border-gray-100"></div>
+    <Writing />
+    <div class="border-t border-gray-100"></div>
+    <About />
+    <div class="border-t border-gray-100"></div>
+    <Experience />
+    <div class="border-t border-gray-100"></div>
+    <Contact />
+  </main>
+
+  <style>
+    .z-logo {
+      display: inline-block;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .z-logo:hover {
+      opacity: 1;
+      transform: rotate(-45deg);
+    }
+
+    #main-nav {
+      background-color: #DAF0F7;
+    }
+  </style>
+
+</Layout>

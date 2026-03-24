@@ -1,0 +1,53 @@
+---
+const skills = ['User interface design', 'Design systems', 'UX design', 'Visual design'];
+---
+
+<section id="about" class="py-20 px-8 bg-white">
+  <div class="max-w-5xl mx-auto space-y-20">
+
+    <!-- About heading + two-col bio -->
+    <div>
+      <div class="border-t border-gray-200 mb-4"></div>
+      <h2 class="font-medium text-black mb-12" style="font-size: 56px; letter-spacing: -2.2px; line-height: 67.2px;">About</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <!-- Left: intro -->
+        <div class="space-y-6" style="font-size: 24px; letter-spacing: -0.7px; line-height: 1.45; color: rgba(0,0,0,0.659);">
+          <p>
+            I'm Zehra Šarić - a product designer who loves bringing ideas to life through clean, thoughtful, and user-friendly design.
+          </p>
+          <p>
+            Over the past few years, I've worked with startups and teams to turn complex problems into simple, beautiful experiences. Currently designing and creating from Mostar, Bosnia and Herzegovina.
+          </p>
+        </div>
+
+        <!-- Right: detail paragraphs -->
+        <div class="space-y-5" style="font-size: 18px; letter-spacing: -0.4px; line-height: 1.6; color: rgba(0,0,0,0.549);">
+          <p>
+            I'm currently a <span class="text-black font-medium">Senior Product Designer at Fitify</span>, where I design core experiences for an AI-powered fitness and nutrition platform used by casual fitness enthusiasts worldwide. My work spans workout flows, calorie tracking, onboarding, and A/B experimentation—always grounded in user behavior and retention data.
+          </p>
+          <p>
+            Previously, I worked at <span class="text-black font-medium">Rolla</span>, a fast-growing health-tech startup, where I built the Health module from scratch and redesigned the Diet onboarding flow, reducing drop-off by 40%. Before that, I worked with early-stage startups at SixBerries (UK), helping founders turn ideas into real products—from first sketches to launched MVPs across health, edtech, fintech, and compliance.
+          </p>
+          <p>
+            Across all these experiences—from AI fitness tools to wellness apps and fintech platforms—I've focused on turning complexity into clarity through thoughtful design, collaboration, and constant iteration.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skills -->
+    <div>
+      <div class="border-t border-gray-200 mb-4"></div>
+      <h2 class="font-medium text-black mb-10" style="font-size: 56px; letter-spacing: -2.2px; line-height: 67.2px;">Skills</h2>
+      <div class="divide-y divide-gray-100">
+        {skills.map((skill) => (
+          <p class="font-medium text-black py-6" style="font-size: 80px; letter-spacing: -4px; line-height: 1.05;">
+            {skill}
+          </p>
+        ))}
+      </div>
+    </div>
+
+  </div>
+</section>

@@ -1,0 +1,65 @@
+---
+import { projects } from '../data/projects';
+
+const featured = projects[0];
+const grid = projects.slice(1);
+---
+
+<section id="work" class="py-20 px-8 bg-white">
+  <div class="max-w-5xl mx-auto">
+    <div class="border-t border-gray-200 mb-4"></div>
+    <h2 class="font-medium text-black mb-10" style="font-size: 56px; letter-spacing: -2.2px; line-height: 67.2px;">Work</h2>
+
+    <!-- Featured full-width card -->
+    <a
+      href={`/work/${featured.slug}`}
+      class="group block rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 mb-5"
+    >
+      <div class="w-full flex items-center justify-center bg-gray-50 overflow-hidden" style="min-height: 360px;">
+        <img
+          src={featured.image}
+          alt={featured.title}
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          style="max-height: 360px; object-fit: cover;"
+          onerror="this.parentElement.style.minHeight='360px'; this.style.display='none';"
+        />
+      </div>
+      <div class="px-6 py-5">
+        <p class="font-normal text-black" style="font-size: 24px; letter-spacing: -0.7px;">
+          {featured.title} {!featured.nda && '→'}
+        </p>
+        <p class="mt-1 font-normal" style="font-size: 20px; letter-spacing: -0.5px; color: rgba(0,0,0,0.5);">
+          {featured.subtitle}{featured.nda ? ' (NDA)' : ''}
+        </p>
+      </div>
+    </a>
+
+    <!-- 2×2 grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      {grid.map((project) => (
+        <a
+          href={`/work/${project.slug}`}
+          class="group block rounded-2xl overflow-hidden bg-gray-50 border border-gray-100"
+        >
+          <div class="aspect-video bg-gray-100 overflow-hidden">
+            <img
+              src={project.image}
+              alt={project.title}
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              onerror="this.parentElement.innerHTML='<div class=\'w-full h-full flex items-center justify-center text-gray-300 text-sm bg-gray-50\'>No preview</div>'"
+            />
+          </div>
+          <div class="px-5 py-4">
+            <p class="font-normal text-black" style="font-size: 20px; letter-spacing: -0.5px;">
+              {project.title} {!project.nda && '→'}
+            </p>
+            <p class="mt-1 font-normal" style="font-size: 18px; letter-spacing: -0.4px; color: rgba(0,0,0,0.5);">
+              {project.subtitle}{project.nda ? ' (NDA)' : ''}
+            </p>
+          </div>
+        </a>
+      ))}
+    </div>
+
+  </div>
+</section>

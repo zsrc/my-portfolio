@@ -1,0 +1,49 @@
+---
+const jobs = [
+  { company: 'CyberMetis', role: 'Senior Product Designer', period: 'Sep 2025 - Today' },
+  { company: 'Rolla', role: 'Senior Product Designer', period: 'Feb 2023 - Jul 2025' },
+  { company: 'CEQUENS', role: 'Product Designer', period: 'Nov 2022 - Jan 2023' },
+  { company: 'SixBerries Ltd.', role: 'Design Lead', period: 'Jun 2020 - Feb 2023' },
+  { company: 'Natuzzi', role: 'Marketing Assistant', period: 'Feb 2020 - May 2020' },
+];
+---
+
+<section id="experience" class="py-20 px-8 bg-white">
+  <div class="max-w-5xl mx-auto">
+    <div class="grid grid-cols-[1fr_2fr] gap-16">
+
+      <!-- Left: heading -->
+      <div>
+        <div class="border-t border-gray-200 mb-4"></div>
+        <h2 class="font-medium text-black" style="font-size: 56px; letter-spacing: -2.2px; line-height: 67.2px;">Experience</h2>
+      </div>
+
+      <!-- Right: jobs + CTA -->
+      <div>
+        <div class="divide-y divide-gray-100">
+          {jobs.map((job) => (
+            <div class="py-7">
+              <p class="font-medium text-black" style="font-size: 32px; letter-spacing: -1px;">{job.company}</p>
+              <p class="font-medium text-black" style="font-size: 32px; letter-spacing: -1px;">{job.role}</p>
+              <p class="mt-2 font-normal" style="font-size: 24px; letter-spacing: -0.7px; color: rgba(0,0,0,0.45);">{job.period}</p>
+            </div>
+          ))}
+        </div>
+
+        <!-- CV CTA -->
+        <div class="mt-8">
+          <a
+            href="/zehra-saric-cv.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center justify-center w-full bg-black text-white font-medium rounded-lg"
+            style="font-size: 18px; padding: 18px 24px;"
+          >
+            See full CV →
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

@@ -1,0 +1,57 @@
+---
+const email = 'saric.zehra@hotmail.com';
+---
+
+<section id="contact" class="py-20 px-8 bg-white">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="font-medium text-black mb-12" style="font-size: 56px; letter-spacing: -2.2px; line-height: 67.2px;">Contact</h2>
+
+    <div class="max-w-2xl space-y-6">
+      <p class="font-normal" style="font-size: 24px; letter-spacing: -0.7px; line-height: 34.8px; color: rgba(0,0,0,0.549);">
+        I'm open to new opportunities, collaborations, and interesting conversations.
+        Based in Mostar — available for remote work worldwide.
+      </p>
+
+      <a
+        href={`mailto:${email}`}
+        class="inline-flex items-center gap-2 font-normal text-black"
+        style="font-size: 24px; letter-spacing: -0.7px;"
+      >
+        {email} →
+      </a>
+
+      <div class="flex gap-6 pt-2">
+        <a href="https://zehrasaric10.medium.com/" target="_blank" rel="noopener noreferrer" class="text-gray-400" style="font-size: 20px;">Medium</a>
+        <a href="https://dribbble.com/pantea10" target="_blank" rel="noopener noreferrer" class="text-gray-400" style="font-size: 20px;">Dribbble</a>
+        <a href="https://www.behance.net/panteash" target="_blank" rel="noopener noreferrer" class="text-gray-400" style="font-size: 20px;">Behance</a>
+        <a href="https://discordapp.com/users/ZehraS#7020/" target="_blank" rel="noopener noreferrer" class="text-gray-400" style="font-size: 20px;">Discord</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="py-8 px-8 border-t border-gray-100">
+  <div class="max-w-5xl mx-auto flex justify-between items-center">
+    <a href="#home" class="z-logo-footer" aria-label="Home">
+      <svg width="20" height="24" viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 23.2727V19.7727L11 5.09091H0.0454546V0H19.0455V3.5L8.04545 18.1818H19V23.2727H0Z" fill="black"/>
+      </svg>
+    </a>
+    <style>
+      .z-logo-footer {
+        display: inline-block;
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .z-logo-footer:hover {
+        opacity: 1;
+        transform: rotate(-45deg);
+      }
+    </style>
+    <nav class="flex gap-7 text-gray-400" style="font-size: 20px;">
+      <a href="#work">Work</a>
+      <a href="#writing">Writing</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</footer>

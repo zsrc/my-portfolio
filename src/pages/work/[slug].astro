@@ -1,0 +1,200 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { projects } from '../../data/projects';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+---
+
+<Layout title={`${project.title} — Zehra Šarić`}>
+
+  <!-- Nav -->
+  <nav id="case-nav" class="fixed top-0 left-0 right-0 z-50 px-8 py-5 flex justify-between items-center" style="background-color: #DAF0F7;">
+    <a href="/" class="z-logo" aria-label="Home">
+      <svg width="20" height="24" viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 23.2727V19.7727L11 5.09091H0.0454546V0H19.0455V3.5L8.04545 18.1818H19V23.2727H0Z" fill="black"/>
+      </svg>
+    </a>
+    <ul class="flex gap-10 text-gray-500 font-medium" style="font-size: 20px; letter-spacing: -0.5px;">
+      <li><a href="/#work">Work</a></li>
+      <li><a href="/#writing">Writing</a></li>
+      <li><a href="/#about">About</a></li>
+      <li><a href="/#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <!-- Hero -->
+    <section style="background-color: #DAF0F7;" class="pt-32 pb-16 px-8">
+      <div class="max-w-5xl mx-auto">
+        <h1 class="font-medium text-black" style="font-size: 80px; letter-spacing: -3px; line-height: 1;">
+          {project.title}
+        </h1>
+      </div>
+    </section>
+
+    <!-- Meta bar -->
+    <section class="py-12 px-8 border-b border-gray-100">
+      <div class="max-w-5xl mx-auto grid grid-cols-3 gap-8">
+        <div>
+          <p class="font-medium text-black uppercase" style="font-size: 11px; letter-spacing: 0.08em; margin-bottom: 6px; color: rgba(0,0,0,0.4);">Year</p>
+          <p class="font-normal text-black" style="font-size: 20px; letter-spacing: -0.5px;">{project.year}</p>
+        </div>
+        <div>
+          <p class="font-medium text-black uppercase" style="font-size: 11px; letter-spacing: 0.08em; margin-bottom: 6px; color: rgba(0,0,0,0.4);">Team</p>
+          <p class="font-normal text-black" style="font-size: 20px; letter-spacing: -0.5px;">{project.team}</p>
+        </div>
+        <div>
+          <p class="font-medium text-black uppercase" style="font-size: 11px; letter-spacing: 0.08em; margin-bottom: 6px; color: rgba(0,0,0,0.4);">Contribution</p>
+          <p class="font-normal text-black" style="font-size: 20px; letter-spacing: -0.5px;">{project.contribution}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Overview -->
+    <section class="py-16 px-8">
+      <div class="max-w-5xl mx-auto grid gap-16" style="grid-template-columns: 1fr 2fr;">
+        <div>
+          <div class="border-t border-gray-200 pt-4">
+            <h2 class="font-medium text-black" style="font-size: 32px; letter-spacing: -1px;">Overview</h2>
+          </div>
+        </div>
+        <div>
+          <p class="font-normal" style="font-size: 24px; letter-spacing: -0.7px; line-height: 1.5; color: rgba(0,0,0,0.659);">
+            {project.overview}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Full bleed image -->
+    <section class="w-full">
+      <div style="max-height: 600px; overflow: hidden; background-color: #f3f4f6;">
+        <img
+          src={project.fullBleedImage}
+          alt={`${project.title} full image`}
+          class="w-full object-cover"
+          style="max-height: 600px; display: block;"
+          onerror="this.style.display='none'; this.parentElement.style.minHeight='600px';"
+        />
+      </div>
+    </section>
+
+    <!-- Process -->
+    <section class="py-16 px-8">
+      <div class="max-w-5xl mx-auto grid gap-16" style="grid-template-columns: 1fr 2fr;">
+        <div>
+          <div class="border-t border-gray-200 pt-4">
+            <h2 class="font-medium text-black" style="font-size: 32px; letter-spacing: -1px;">Process</h2>
+          </div>
+        </div>
+        <div>
+          <p class="font-normal" style="font-size: 24px; letter-spacing: -0.7px; line-height: 1.5; color: rgba(0,0,0,0.659);">
+            {project.process}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Images 1–3 -->
+    <section class="py-8 px-8">
+      <div class="max-w-5xl mx-auto flex flex-col gap-4">
+        {project.images.slice(0, 3).map((img, i) => (
+          <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden">
+            <img
+              src={img}
+              alt={`${project.title} image ${i + 1}`}
+              class="w-full h-full object-cover"
+              onerror="this.style.display='none'; this.parentElement.style.background='#f3f4f6';"
+            />
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Process part 2 -->
+    <section class="py-16 px-8">
+      <div class="max-w-5xl mx-auto">
+        <p class="font-normal" style="font-size: 24px; letter-spacing: -0.7px; line-height: 1.5; color: rgba(0,0,0,0.659);">
+          {project.process2}
+        </p>
+      </div>
+    </section>
+
+    <!-- Images 4–6 -->
+    <section class="py-8 px-8">
+      <div class="max-w-5xl mx-auto flex flex-col gap-4">
+        {project.images.slice(3).map((img, i) => (
+          <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden">
+            <img
+              src={img}
+              alt={`${project.title} image ${i + 4}`}
+              class="w-full h-full object-cover"
+              onerror="this.style.display='none'; this.parentElement.style.background='#f3f4f6';"
+            />
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Outcome -->
+    <section class="py-16 px-8">
+      <div class="max-w-5xl mx-auto grid gap-16" style="grid-template-columns: 1fr 2fr;">
+        <div>
+          <div class="border-t border-gray-200 pt-4">
+            <h2 class="font-medium text-black" style="font-size: 32px; letter-spacing: -1px;">Outcome</h2>
+          </div>
+        </div>
+        <div>
+          <p class="font-normal" style="font-size: 24px; letter-spacing: -0.7px; line-height: 1.5; color: rgba(0,0,0,0.659);">
+            {project.outcome}
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-8 px-8 border-t border-gray-100">
+    <div class="max-w-5xl mx-auto flex justify-between items-center">
+      <a href="/" class="z-logo-footer" aria-label="Home">
+        <svg width="20" height="24" viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 23.2727V19.7727L11 5.09091H0.0454546V0H19.0455V3.5L8.04545 18.1818H19V23.2727H0Z" fill="black"/>
+        </svg>
+      </a>
+      <nav class="flex gap-7 text-gray-400" style="font-size: 20px;">
+        <a href="/#work">Work</a>
+        <a href="/#writing">Writing</a>
+        <a href="/#about">About</a>
+        <a href="/#contact">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+</Layout>
+
+<style>
+  .z-logo {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .z-logo:hover {
+    transform: rotate(-45deg);
+  }
+
+  .z-logo-footer {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .z-logo-footer:hover {
+    transform: rotate(-45deg);
+  }
+</style>
