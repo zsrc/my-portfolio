@@ -26,5 +26,103 @@ const {
   </head>
   <body>
     <slot />
+
+    <!-- Password Modal -->
+    <div id="pw-backdrop" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:1000; align-items:center; justify-content:center; padding:16px;">
+      <div id="pw-modal" style="background:#ffffff; border-radius:20px; padding:40px; max-width:480px; width:100%; box-shadow:0 24px 64px rgba(0,0,0,0.18);">
+        <h2 style="font-family:'Outfit',sans-serif; font-weight:500; font-size:28px; letter-spacing:-1px; color:#0a0a0a; margin:0 0 12px 0;">Password Protected</h2>
+        <p style="font-family:'Outfit',sans-serif; font-size:16px; line-height:1.6; color:rgba(0,0,0,0.55); margin:0 0 28px 0;">My portfolio contains protected design work. Enter the password available upon request.</p>
+        <input
+          id="pw-input"
+          type="password"
+          placeholder="Enter password"
+          style="width:100%; box-sizing:border-box; border:1px solid #e5e7eb; border-radius:12px; padding:14px 16px; font-family:'Outfit',sans-serif; font-size:16px; outline:none; margin-bottom:12px; transition:border-color 0.2s ease;"
+        />
+        <p id="pw-error" style="display:none; font-family:'Outfit',sans-serif; font-size:14px; color:#ef4444; margin:0 0 12px 0;"></p>
+        <div style="display:flex; gap:10px;">
+          <button id="pw-submit" style="flex:1; background:#0a0a0a; color:#ffffff; border:none; border-radius:999px; padding:14px 28px; font-family:'Outfit',sans-serif; font-size:16px; font-weight:500; cursor:pointer; transition:opacity 0.2s ease;">
+            Enter
+          </button>
+          <button id="pw-cancel" style="background:#f3f4f6; color:#0a0a0a; border:none; border-radius:999px; padding:14px 24px; font-family:'Outfit',sans-serif; font-size:16px; cursor:pointer; transition:opacity 0.2s ease;">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const CORRECT_PASSWORD = 'zehra';
+      const SESSION_KEY = 'portfolio_unlocked';
+
+      const backdrop = document.getElementById('pw-backdrop');
+      const input = document.getElementById('pw-input') as HTMLInputElement;
+      const errorEl = document.getElementById('pw-error');
+      const submitBtn = document.getElementById('pw-submit');
+      const cancelBtn = document.getElementById('pw-cancel');
+
+      let pendingUrl = '';
+
+      const funnyErrors = [
+        "Nope. Not even close. Did you try 'password123'? 😅",
+        "Wrong! Are you sure you're not just typing your WiFi password?",
+        "Incorrect. But points for confidence.",
+        "That's not it. Maybe try reading the brief next time?",
+        "Error 404: Correct password not found in your brain.",
+        "Nice try. Have you considered a career in guessing?",
+        "Bzzt. Wrong answer. The judges were not impressed.",
+        "That password is as wrong as Comic Sans in a medical app.",
+      ];
+
+      function isUnlocked() {
+        return sessionStorage.getItem(SESSION_KEY) === 'true';
+      }
+
+      function openModal(url: string) {
+        pendingUrl = url;
+        backdrop.style.display = 'flex';
+        input.value = '';
+        errorEl.style.display = 'none';
+        setTimeout(() => input.focus(), 50);
+      }
+
+      function closeModal() {
+        backdrop.style.display = 'none';
+        pendingUrl = '';
+        input.value = '';
+        errorEl.style.display = 'none';
+      }
+
+      function attemptUnlock() {
+        if (input.value === CORRECT_PASSWORD) {
+          sessionStorage.setItem(SESSION_KEY, 'true');
+          closeModal();
+          window.location.href = pendingUrl;
+        } else {
+          const msg = funnyErrors[Math.floor(Math.random() * funnyErrors.length)];
+          errorEl.textContent = msg;
+          errorEl.style.display = 'block';
+          input.value = '';
+          input.focus();
+          input.style.borderColor = '#ef4444';
+          setTimeout(() => { input.style.borderColor = '#e5e7eb'; }, 1500);
+        }
+      }
+
+      submitBtn?.addEventListener('click', attemptUnlock);
+      cancelBtn?.addEventListener('click', closeModal);
+      backdrop?.addEventListener('click', (e) => { if (e.target === backdrop) closeModal(); });
+      input?.addEventListener('keydown', (e) => { if (e.key === 'Enter') attemptUnlock(); });
+
+      // Intercept all work links
+      document.addEventListener('click', (e) => {
+        const anchor = (e.target as Element).closest('a');
+        if (!anchor) return;
+        const href = anchor.getAttribute('href');
+        if (!href || !href.startsWith('/work/')) return;
+        if (isUnlocked()) return;
+        e.preventDefault();
+        openModal(href);
+      });
+    </script>
   </body>
 </html>
