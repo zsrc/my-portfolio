@@ -1,0 +1,73 @@
+---
+const images = [
+  '/images/interests/interest-5.jpeg',
+  '/images/interests/interest-6.jpeg',
+  '/images/interests/interest-7.jpeg',
+  '/images/interests/interest-8.jpeg',
+  '/images/interests/interest-9.jpeg',
+  '/images/interests/interest-10.jpeg',
+  '/images/interests/interest-11.jpeg',
+  '/images/interests/interest-12.jpeg',
+  '/images/interests/interest-13.jpeg',
+  '/images/interests/interest-14.jpeg',
+  '/images/interests/interest-15.jpeg',
+  '/images/interests/interest-16.jpeg',
+];
+---
+
+<section id="interests" class="section bg-white">
+  <div class="container">
+    <div class="interests-layout">
+
+      <!-- Left: heading -->
+      <div>
+        <div class="border-t border-gray-200 mb-4"></div>
+        <h2 class="font-medium text-black" style="font-size: 56px; letter-spacing: -2.2px; line-height: 67.2px;">Interests</h2>
+      </div>
+
+      <!-- Right: image grid -->
+      <div class="interests-grid">
+        {images.map((src, i) => (
+          <div class="interest-card">
+            <img src={src} alt={`Interest ${i + 1}`} class="interest-img" />
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .interests-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 64px;
+    align-items: start;
+  }
+
+  .interests-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .interest-card {
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: #f3f4f6;
+    aspect-ratio: 1 / 1;
+  }
+
+  .interest-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .interest-card:hover .interest-img {
+    transform: scale(1.04);
+  }
+</style>

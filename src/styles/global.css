@@ -4,6 +4,55 @@
   --font-sans: 'Outfit', ui-sans-serif, system-ui, sans-serif;
 }
 
+/* Spacing tokens */
+:root {
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-8: 64px;
+  --space-10: 80px;
+  --space-12: 96px;
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+@media (max-width: 1024px) { .container { padding-inline: 24px; } }
+@media (max-width: 640px)  { .container { padding-inline: 16px; } }
+
+/* Section vertical rhythm */
+.section {
+  padding-top: var(--space-10);
+  padding-bottom: var(--space-10);
+}
+
+/* Grid utilities */
+.grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+}
+
+.grid-3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-12);
+}
+
+@media (max-width: 640px) {
+  .grid-2col,
+  .grid-3col { grid-template-columns: 1fr; }
+}
+
 html {
   scroll-behavior: smooth;
 }

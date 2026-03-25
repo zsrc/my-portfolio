@@ -5,18 +5,19 @@ import Projects from '../components/Projects.astro';
 import Writing from '../components/Writing.astro';
 import About from '../components/About.astro';
 import Experience from '../components/Experience.astro';
+import Interests from '../components/Interests.astro';
 import Contact from '../components/Contact.astro';
 ---
 
 <Layout>
   <!-- Nav -->
-  <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 px-8 py-5 flex justify-between items-center transition-colors duration-300">
+  <nav id="main-nav" class="fixed z-50 flex justify-between items-center">
     <a href="#home" class="z-logo" aria-label="Home">
-      <svg width="20" height="24" viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0 23.2727V19.7727L11 5.09091H0.0454546V0H19.0455V3.5L8.04545 18.1818H19V23.2727H0Z" fill="black"/>
+      <svg viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 29px;">
+        <path d="M0 23.2727V19.7727L11 5.09091H0.0454546V0H19.0455V3.5L8.04545 18.1818H19V23.2727H0Z" fill="white"/>
       </svg>
     </a>
-    <ul class="flex gap-10 text-gray-500 font-medium" style="font-size: 20px; letter-spacing: -0.5px;">
+    <ul class="flex gap-10 font-medium" style="font-size: 20px; letter-spacing: -0.5px; color: #ffffff;">
       <li><a href="#work">Work</a></li>
       <li><a href="#writing">Writing</a></li>
       <li><a href="#about">About</a></li>
@@ -31,6 +32,8 @@ import Contact from '../components/Contact.astro';
     <Writing />
     <div class="border-t border-gray-100"></div>
     <About />
+    <div class="border-t border-gray-100"></div>
+    <Interests />
     <div class="border-t border-gray-100"></div>
     <Experience />
     <div class="border-t border-gray-100"></div>
@@ -48,8 +51,37 @@ import Contact from '../components/Contact.astro';
     }
 
     #main-nav {
-      background-color: #DAF0F7;
+      opacity: 0;
+      pointer-events: none;
+      left: 50%;
+      transform: translateX(-50%) translateY(-10px);
+      width: calc(100% - 64px);
+      max-width: 780px;
+      top: 20px;
+      border-radius: 999px;
+      padding: 14px 28px;
+      background-color: #0a0a0a;
+      border: 1px solid #222222;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    #main-nav.scrolled {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
     }
   </style>
+
+<script>
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 80) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  });
+</script>
 
 </Layout>

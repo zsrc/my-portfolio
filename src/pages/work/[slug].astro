@@ -10,18 +10,19 @@ export function getStaticPaths() {
 }
 
 const { project } = Astro.props;
+const moreProjects = projects.filter(p => p.slug !== project.slug).slice(0, 3);
 ---
 
 <Layout title={`${project.title} — Zehra Šarić`}>
 
-  <!-- Nav -->
-  <nav id="case-nav" class="fixed top-0 left-0 right-0 z-50 px-8 py-5 flex justify-between items-center" style="background-color: #DAF0F7;">
+  <!-- Floating pill nav -->
+  <nav id="case-nav" class="fixed z-50 flex justify-between items-center">
     <a href="/" class="z-logo" aria-label="Home">
-      <svg width="20" height="24" viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0 23.2727V19.7727L11 5.09091H0.0454546V0H19.0455V3.5L8.04545 18.1818H19V23.2727H0Z" fill="black"/>
+      <svg viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 29px;">
+        <path d="M0 23.2727V19.7727L11 5.09091H0.0454546V0H19.0455V3.5L8.04545 18.1818H19V23.2727H0Z" fill="white"/>
       </svg>
     </a>
-    <ul class="flex gap-10 text-gray-500 font-medium" style="font-size: 20px; letter-spacing: -0.5px;">
+    <ul class="flex gap-10 font-medium" style="font-size: 20px; letter-spacing: -0.5px; color: #ffffff;">
       <li><a href="/#work">Work</a></li>
       <li><a href="/#writing">Writing</a></li>
       <li><a href="/#about">About</a></li>
@@ -31,45 +32,64 @@ const { project } = Astro.props;
 
   <main>
 
-    <!-- Hero -->
-    <section style="background-color: #DAF0F7;" class="pt-32 pb-16 px-8">
-      <div class="max-w-5xl mx-auto">
-        <h1 class="font-medium text-black" style="font-size: 80px; letter-spacing: -3px; line-height: 1;">
+    <!-- Hero card -->
+    <section style="background-color: #0a0a0a; border-radius: 24px; margin: 12px 12px 0 12px; min-height: calc(75vh - 18px); overflow: hidden; padding: 40px 48px; display: flex; flex-direction: column; justify-content: flex-end;">
+      <div>
+        <h1 class="font-medium" style="color: #ffffff; font-size: clamp(28px, 4vw, 52px); line-height: 1.25; max-width: 52%; letter-spacing: -2px;">
           {project.title}
         </h1>
+        {project.nda && (
+          <span class="nda-tag">NDA</span>
+        )}
       </div>
     </section>
 
     <!-- Meta bar -->
-    <section class="py-12 px-8 border-b border-gray-100">
-      <div class="max-w-5xl mx-auto grid grid-cols-3 gap-8">
-        <div>
-          <p class="font-medium text-black uppercase" style="font-size: 11px; letter-spacing: 0.08em; margin-bottom: 6px; color: rgba(0,0,0,0.4);">Year</p>
-          <p class="font-normal text-black" style="font-size: 20px; letter-spacing: -0.5px;">{project.year}</p>
-        </div>
-        <div>
-          <p class="font-medium text-black uppercase" style="font-size: 11px; letter-spacing: 0.08em; margin-bottom: 6px; color: rgba(0,0,0,0.4);">Team</p>
-          <p class="font-normal text-black" style="font-size: 20px; letter-spacing: -0.5px;">{project.team}</p>
-        </div>
-        <div>
-          <p class="font-medium text-black uppercase" style="font-size: 11px; letter-spacing: 0.08em; margin-bottom: 6px; color: rgba(0,0,0,0.4);">Contribution</p>
-          <p class="font-normal text-black" style="font-size: 20px; letter-spacing: -0.5px;">{project.contribution}</p>
-        </div>
+    <section class="py-12 border-b border-gray-100">
+      <div class="container" style={`display: grid; grid-template-columns: repeat(${project.metaItems ? project.metaItems.length : 3}, 1fr); gap: 32px;`}>
+        {project.metaItems ? project.metaItems.map((item) => (
+          <div>
+            <p class="font-medium uppercase" style="font-size: 11px; letter-spacing: 0.08em; margin-bottom: 6px; color: rgba(0,0,0,0.4);">{item.label}</p>
+            <p class="font-normal text-black" style="font-size: 20px; letter-spacing: -0.5px;">{item.value}</p>
+          </div>
+        )) : (
+          <>
+            <div>
+              <p class="font-medium uppercase" style="font-size: 11px; letter-spacing: 0.08em; margin-bottom: 6px; color: rgba(0,0,0,0.4);">Year</p>
+              <p class="font-normal text-black" style="font-size: 20px; letter-spacing: -0.5px;">{project.year}</p>
+            </div>
+            <div>
+              <p class="font-medium uppercase" style="font-size: 11px; letter-spacing: 0.08em; margin-bottom: 6px; color: rgba(0,0,0,0.4);">Team</p>
+              <p class="font-normal text-black" style="font-size: 20px; letter-spacing: -0.5px;">{project.team}</p>
+            </div>
+            <div>
+              <p class="font-medium uppercase" style="font-size: 11px; letter-spacing: 0.08em; margin-bottom: 6px; color: rgba(0,0,0,0.4);">Contribution</p>
+              <p class="font-normal text-black" style="font-size: 20px; letter-spacing: -0.5px;">{project.contribution}</p>
+            </div>
+          </>
+        )}
       </div>
     </section>
 
     <!-- Overview -->
-    <section class="py-16 px-8">
-      <div class="max-w-5xl mx-auto grid gap-16" style="grid-template-columns: 1fr 2fr;">
+    <section class="section">
+      <div class="container grid gap-16" style="grid-template-columns: 1fr 2fr;">
         <div>
           <div class="border-t border-gray-200 pt-4">
             <h2 class="font-medium text-black" style="font-size: 32px; letter-spacing: -1px;">Overview</h2>
           </div>
         </div>
-        <div>
-          <p class="font-normal" style="font-size: 24px; letter-spacing: -0.7px; line-height: 1.5; color: rgba(0,0,0,0.659);">
-            {project.overview}
-          </p>
+        <div class="overview-body">
+          {project.overview.split('\n\n').map((para) => (
+            <p class="font-normal" style="font-size: 24px; letter-spacing: -0.7px; line-height: 1.5; color: rgba(0,0,0,0.659);">
+              {para}
+            </p>
+          ))}
+          {project.nda && (
+            <blockquote class="nda-note">
+              The visuals and layouts included here are my own re-creations of the project's design work. Due to confidentiality agreements, they are not the final production screens but conceptual representations used to illustrate the process and design thinking.
+            </blockquote>
+          )}
         </div>
       </div>
     </section>
@@ -88,24 +108,26 @@ const { project } = Astro.props;
     </section>
 
     <!-- Process -->
-    <section class="py-16 px-8">
-      <div class="max-w-5xl mx-auto grid gap-16" style="grid-template-columns: 1fr 2fr;">
+    <section class="section">
+      <div class="container grid gap-16" style="grid-template-columns: 1fr 2fr;">
         <div>
           <div class="border-t border-gray-200 pt-4">
             <h2 class="font-medium text-black" style="font-size: 32px; letter-spacing: -1px;">Process</h2>
           </div>
         </div>
-        <div>
-          <p class="font-normal" style="font-size: 24px; letter-spacing: -0.7px; line-height: 1.5; color: rgba(0,0,0,0.659);">
-            {project.process}
-          </p>
+        <div class="overview-body">
+          {project.process.split('\n\n').map((para) => (
+            <p class="font-normal" style="font-size: 24px; letter-spacing: -0.7px; line-height: 1.5; color: rgba(0,0,0,0.659);">
+              {para}
+            </p>
+          ))}
         </div>
       </div>
     </section>
 
     <!-- Images 1–3 -->
-    <section class="py-8 px-8">
-      <div class="max-w-5xl mx-auto flex flex-col gap-4">
+    <section class="py-8">
+      <div class="container flex flex-col gap-4">
         {project.images.slice(0, 3).map((img, i) => (
           <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden">
             <img
@@ -120,17 +142,23 @@ const { project } = Astro.props;
     </section>
 
     <!-- Process part 2 -->
-    <section class="py-16 px-8">
-      <div class="max-w-5xl mx-auto">
-        <p class="font-normal" style="font-size: 24px; letter-spacing: -0.7px; line-height: 1.5; color: rgba(0,0,0,0.659);">
-          {project.process2}
-        </p>
+    <section class="section">
+      <div class="container rich-body">
+        {project.process2Blocks ? project.process2Blocks.map((block) => {
+          if (block.type === 'h2') return <h2 class="rich-h2" set:html={block.html} />;
+          if (block.type === 'h3') return <h3 class="rich-h3" set:html={block.html} />;
+          return <p class="rich-p" set:html={block.html} />;
+        }) : (
+          <p class="font-normal" style="font-size: 24px; letter-spacing: -0.7px; line-height: 1.5; color: rgba(0,0,0,0.659);">
+            {project.process2}
+          </p>
+        )}
       </div>
     </section>
 
     <!-- Images 4–6 -->
-    <section class="py-8 px-8">
-      <div class="max-w-5xl mx-auto flex flex-col gap-4">
+    <section class="py-8">
+      <div class="container flex flex-col gap-4">
         {project.images.slice(3).map((img, i) => (
           <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden">
             <img
@@ -145,28 +173,55 @@ const { project } = Astro.props;
     </section>
 
     <!-- Outcome -->
-    <section class="py-16 px-8">
-      <div class="max-w-5xl mx-auto grid gap-16" style="grid-template-columns: 1fr 2fr;">
+    <section class="section">
+      <div class="container grid gap-16" style="grid-template-columns: 1fr 2fr;">
         <div>
           <div class="border-t border-gray-200 pt-4">
             <h2 class="font-medium text-black" style="font-size: 32px; letter-spacing: -1px;">Outcome</h2>
           </div>
         </div>
-        <div>
-          <p class="font-normal" style="font-size: 24px; letter-spacing: -0.7px; line-height: 1.5; color: rgba(0,0,0,0.659);">
-            {project.outcome}
-          </p>
+        <div class="overview-body">
+          {project.outcomeBlocks ? project.outcomeBlocks.map((block) => {
+            if (block.type === 'h2') return <h2 class="rich-h2" set:html={block.html} />;
+            if (block.type === 'h3') return <h3 class="rich-h3" set:html={block.html} />;
+            return <p class="rich-p" set:html={block.html} />;
+          }) : project.outcome.split('\n\n').map((para) => (
+            <p class="font-normal" style="font-size: 24px; letter-spacing: -0.7px; line-height: 1.5; color: rgba(0,0,0,0.659);">
+              {para}
+            </p>
+          ))}
         </div>
       </div>
     </section>
 
   </main>
 
+  <!-- More Projects -->
+  <section class="section bg-white">
+    <div class="container">
+      <div class="border-t border-gray-200 mb-10"></div>
+      <h2 class="font-medium text-black mb-10" style="font-size: 56px; letter-spacing: -2.2px; line-height: 1.2;">More Projects</h2>
+      <div class="more-grid">
+        {moreProjects.map((p) => (
+          <a href={`/work/${p.slug}`} class="more-card">
+            <div class="more-img-wrap">
+              <img src={p.image} alt={p.title} class="more-img" onerror="this.style.display='none'" />
+            </div>
+            <div class="more-overlay">
+              <p class="more-title">{p.title}</p>
+              <p class="more-desc">{p.subtitle}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
-  <footer class="py-8 px-8 border-t border-gray-100">
-    <div class="max-w-5xl mx-auto flex justify-between items-center">
+  <footer class="py-8 border-t border-gray-100">
+    <div class="container flex justify-between items-center">
       <a href="/" class="z-logo-footer" aria-label="Home">
-        <svg width="20" height="24" viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 20 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 29px;">
           <path d="M0 23.2727V19.7727L11 5.09091H0.0454546V0H19.0455V3.5L8.04545 18.1818H19V23.2727H0Z" fill="black"/>
         </svg>
       </a>
@@ -187,6 +242,7 @@ const { project } = Astro.props;
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
   .z-logo:hover {
+    opacity: 1;
     transform: rotate(-45deg);
   }
 
@@ -197,4 +253,182 @@ const { project } = Astro.props;
   .z-logo-footer:hover {
     transform: rotate(-45deg);
   }
+
+  #case-nav {
+    opacity: 0;
+    pointer-events: none;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    width: calc(100% - 64px);
+    max-width: 780px;
+    top: 20px;
+    border-radius: 999px;
+    padding: 14px 28px;
+    background-color: #0a0a0a;
+    border: 1px solid #222222;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .overview-body {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .nda-tag {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 4px 14px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 999px;
+    color: rgba(255,255,255,0.6);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .nda-note {
+    border-left: 2px solid #d1d5db;
+    padding: 4px 0 4px 24px;
+    margin: 0;
+    font-style: italic;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.7;
+    color: rgba(0,0,0,0.35);
+    letter-spacing: -0.3px;
+  }
+
+  .rich-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 860px;
+  }
+
+  .rich-h2 {
+    font-size: 40px;
+    font-weight: 500;
+    letter-spacing: -1.5px;
+    line-height: 1.2;
+    color: #0a0a0a;
+    margin-top: 24px;
+    margin-bottom: 8px;
+  }
+
+  .rich-h3 {
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: -0.8px;
+    line-height: 1.3;
+    color: #0a0a0a;
+    margin-top: 32px;
+    margin-bottom: 4px;
+  }
+
+  .rich-p {
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+    line-height: 1.7;
+    color: rgba(0,0,0,0.659);
+  }
+
+  .rich-p strong {
+    color: #0a0a0a;
+    font-weight: 500;
+  }
+
+  .rich-p em {
+    font-style: italic;
+  }
+
+  /* More Projects grid */
+  .more-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .more-card {
+    position: relative;
+    display: block;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: #f3f4f6;
+    text-decoration: none;
+    height: 360px;
+  }
+
+  .more-img-wrap {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .more-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .more-card:hover .more-img {
+    transform: scale(1.04);
+  }
+
+  .more-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 24px;
+    background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+
+  .more-card:hover .more-overlay {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .more-title {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  .more-desc {
+    color: rgba(255,255,255,0.7);
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: -0.3px;
+    line-height: 1.4;
+    margin: 4px 0 0 0;
+  }
+
+  #case-nav.scrolled {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
 </style>
+
+<script>
+  const nav = document.getElementById('case-nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 80) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  });
+</script>

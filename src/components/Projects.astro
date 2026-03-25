@@ -1,65 +1,153 @@
 ---
 import { projects } from '../data/projects';
-
-const featured = projects[0];
-const grid = projects.slice(1);
 ---
 
-<section id="work" class="py-20 px-8 bg-white">
-  <div class="max-w-5xl mx-auto">
+<section id="work" class="section bg-white">
+  <div class="container">
     <div class="border-t border-gray-200 mb-4"></div>
     <h2 class="font-medium text-black mb-10" style="font-size: 56px; letter-spacing: -2.2px; line-height: 67.2px;">Work</h2>
 
-    <!-- Featured full-width card -->
-    <a
-      href={`/work/${featured.slug}`}
-      class="group block rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 mb-5"
-    >
-      <div class="w-full flex items-center justify-center bg-gray-50 overflow-hidden" style="min-height: 360px;">
-        <img
-          src={featured.image}
-          alt={featured.title}
-          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          style="max-height: 360px; object-fit: cover;"
-          onerror="this.parentElement.style.minHeight='360px'; this.style.display='none';"
-        />
-      </div>
-      <div class="px-6 py-5">
-        <p class="font-normal text-black" style="font-size: 24px; letter-spacing: -0.7px;">
-          {featured.title} {!featured.nda && '→'}
-        </p>
-        <p class="mt-1 font-normal" style="font-size: 20px; letter-spacing: -0.5px; color: rgba(0,0,0,0.5);">
-          {featured.subtitle}{featured.nda ? ' (NDA)' : ''}
-        </p>
-      </div>
-    </a>
+    <div class="bento-wrapper">
 
-    <!-- 2×2 grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-      {grid.map((project) => (
-        <a
-          href={`/work/${project.slug}`}
-          class="group block rounded-2xl overflow-hidden bg-gray-50 border border-gray-100"
-        >
-          <div class="aspect-video bg-gray-100 overflow-hidden">
-            <img
-              src={project.image}
-              alt={project.title}
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              onerror="this.parentElement.innerHTML='<div class=\'w-full h-full flex items-center justify-center text-gray-300 text-sm bg-gray-50\'>No preview</div>'"
-            />
+      <!-- Row 1: LearnPath — full width horizontal -->
+      <a href={`/work/${projects[0].slug}`} class="bento-card bento-featured">
+        <div class="bento-img-wrap">
+          <img src={projects[0].image} alt={projects[0].title} class="bento-img" onerror="this.style.display='none'" />
+        </div>
+        <div class="bento-overlay">
+          <p class="bento-title">{projects[0].title}</p>
+          <p class="bento-desc">{projects[0].subtitle}</p>
+        </div>
+      </a>
+
+      <!-- Row 2: Rolla + QuizCraft — 760×560 each -->
+      <div class="bento-row">
+        <a href={`/work/${projects[1].slug}`} class="bento-card" style="flex: 0 1 760px; height: 560px;">
+          <div class="bento-img-wrap">
+            <img src={projects[1].image} alt={projects[1].title} class="bento-img" onerror="this.style.display='none'" />
           </div>
-          <div class="px-5 py-4">
-            <p class="font-normal text-black" style="font-size: 20px; letter-spacing: -0.5px;">
-              {project.title} {!project.nda && '→'}
-            </p>
-            <p class="mt-1 font-normal" style="font-size: 18px; letter-spacing: -0.4px; color: rgba(0,0,0,0.5);">
-              {project.subtitle}{project.nda ? ' (NDA)' : ''}
-            </p>
+          <div class="bento-overlay">
+            <p class="bento-title">{projects[1].title}</p>
+            <p class="bento-desc">{projects[1].subtitle}</p>
           </div>
         </a>
-      ))}
-    </div>
+        <a href={`/work/${projects[2].slug}`} class="bento-card" style="flex: 0 1 760px; height: 560px;">
+          <div class="bento-img-wrap">
+            <img src={projects[2].image} alt={projects[2].title} class="bento-img" onerror="this.style.display='none'" />
+          </div>
+          <div class="bento-overlay">
+            <p class="bento-title">{projects[2].title}</p>
+            <p class="bento-desc">{projects[2].subtitle}</p>
+          </div>
+        </a>
+      </div>
 
+      <!-- Row 3: Photon 500px + Grow Pharma fills rest -->
+      <div class="bento-row">
+        <a href={`/work/${projects[3].slug}`} class="bento-card" style="flex: 0 0 500px; height: 560px;">
+          <div class="bento-img-wrap">
+            <img src={projects[3].image} alt={projects[3].title} class="bento-img" onerror="this.style.display='none'" />
+          </div>
+          <div class="bento-overlay">
+            <p class="bento-title">{projects[3].title}</p>
+            <p class="bento-desc">{projects[3].subtitle}</p>
+          </div>
+        </a>
+        <a href={`/work/${projects[4].slug}`} class="bento-card" style="flex: 1; height: 560px;">
+          <div class="bento-img-wrap">
+            <img src={projects[4].image} alt={projects[4].title} class="bento-img" onerror="this.style.display='none'" />
+          </div>
+          <div class="bento-overlay">
+            <p class="bento-title">{projects[4].title}</p>
+            <p class="bento-desc">{projects[4].subtitle}</p>
+          </div>
+        </a>
+      </div>
+
+    </div>
   </div>
 </section>
+
+<style>
+  .bento-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .bento-row {
+    display: flex;
+    gap: 12px;
+  }
+
+  .bento-card {
+    position: relative;
+    display: block;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: #f3f4f6;
+    text-decoration: none;
+    cursor: pointer;
+    flex-shrink: 1;
+  }
+
+  .bento-featured {
+    width: 100%;
+    min-height: 480px;
+  }
+
+  /* Image */
+  .bento-img-wrap {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .bento-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .bento-card:hover .bento-img {
+    transform: scale(1.04);
+  }
+
+  /* Overlay — slides up from bottom on hover */
+  .bento-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 24px;
+    background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+
+  .bento-card:hover .bento-overlay {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .bento-title {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  .bento-desc {
+    color: rgba(255,255,255,0.7);
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: -0.3px;
+    line-height: 1.4;
+    margin: 4px 0 0 0;
+  }
+</style>
