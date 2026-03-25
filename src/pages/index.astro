@@ -71,6 +71,17 @@ import Contact from '../components/Contact.astro';
       pointer-events: auto;
       transform: translateX(-50%) translateY(0);
     }
+
+    @media (max-width: 640px) {
+      #main-nav {
+        width: calc(100% - 32px);
+        padding: 12px 20px;
+      }
+      #main-nav ul {
+        gap: 20px !important;
+        font-size: 15px !important;
+      }
+    }
   </style>
 
 <script>

@@ -150,4 +150,22 @@ import { projects } from '../data/projects';
     line-height: 1.4;
     margin: 4px 0 0 0;
   }
+
+  @media (max-width: 768px) {
+    .bento-row {
+      flex-direction: column;
+    }
+    .bento-card {
+      flex: none !important;
+      width: 100% !important;
+      height: 280px !important;
+    }
+    .bento-featured {
+      min-height: 300px !important;
+    }
+    .bento-overlay {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+  }
 </style>

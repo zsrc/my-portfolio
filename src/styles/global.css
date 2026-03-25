@@ -35,6 +35,10 @@
   padding-bottom: var(--space-10);
 }
 
+@media (max-width: 768px) {
+  .section { padding-top: 48px; padding-bottom: 48px; }
+}
+
 /* Grid utilities */
 .grid-2col {
   display: grid;

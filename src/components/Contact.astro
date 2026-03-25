@@ -55,3 +55,30 @@ const email = 'saric.zehra@hotmail.com';
     </nav>
   </div>
 </footer>
+
+<style>
+  @media (max-width: 768px) {
+    #contact h2 {
+      font-size: 40px !important;
+      letter-spacing: -1.5px !important;
+      margin-bottom: 24px !important;
+    }
+    #contact p, #contact a[href^="mailto"] {
+      font-size: 18px !important;
+      letter-spacing: -0.3px !important;
+    }
+    #contact .flex.gap-6 {
+      flex-wrap: wrap;
+      gap: 16px !important;
+    }
+    footer .flex {
+      flex-direction: column;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    footer nav {
+      gap: 16px !important;
+      font-size: 16px !important;
+    }
+  }
+</style>

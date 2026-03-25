@@ -70,4 +70,14 @@ const images = [
   .interest-card:hover .interest-img {
     transform: scale(1.04);
   }
+
+  @media (max-width: 768px) {
+    .interests-layout {
+      grid-template-columns: 1fr !important;
+      gap: 24px !important;
+    }
+    .interests-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+  }
 </style>

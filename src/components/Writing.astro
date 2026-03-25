@@ -29,3 +29,24 @@ import { articles } from '../data/articles';
     </div>
   </div>
 </section>
+
+<style>
+  @media (max-width: 768px) {
+    #writing .grid {
+      grid-template-columns: 1fr !important;
+      gap: 0 !important;
+    }
+    #writing h2 {
+      font-size: 40px !important;
+      letter-spacing: -1.5px !important;
+      line-height: 1.2 !important;
+      margin-bottom: 16px !important;
+    }
+    #writing a p:first-child {
+      font-size: 22px !important;
+    }
+    #writing a p:last-child {
+      font-size: 16px !important;
+    }
+  }
+</style>

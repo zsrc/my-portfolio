@@ -420,6 +420,101 @@ const moreProjects = projects.filter(p => p.slug !== project.slug).slice(0, 3);
     pointer-events: auto;
     transform: translateX(-50%) translateY(0);
   }
+
+  @media (max-width: 768px) {
+    /* Nav */
+    #case-nav {
+      width: calc(100% - 32px);
+      padding: 12px 20px;
+    }
+    #case-nav ul {
+      gap: 16px !important;
+      font-size: 15px !important;
+    }
+
+    /* Hero card */
+    main > section:first-child {
+      margin: 8px 8px 0 8px !important;
+      padding: 24px 20px !important;
+      min-height: 55vh !important;
+    }
+    main > section:first-child h1 {
+      font-size: 26px !important;
+      max-width: 100% !important;
+      letter-spacing: -1px !important;
+    }
+
+    /* Meta bar */
+    main > section:nth-child(2) > div {
+      grid-template-columns: 1fr !important;
+      gap: 16px !important;
+    }
+    main > section:nth-child(2) p[style*="font-size: 20px"] {
+      font-size: 16px !important;
+    }
+
+    /* Overview / Process / Outcome two-col grids */
+    .section > .container[style*="grid-template-columns: 1fr 2fr"] {
+      grid-template-columns: 1fr !important;
+      gap: 16px !important;
+    }
+    .section > .container.rich-body {
+      max-width: 100% !important;
+    }
+
+    /* Body text */
+    .overview-body p,
+    .rich-p {
+      font-size: 17px !important;
+      letter-spacing: -0.3px !important;
+    }
+    .rich-h2 {
+      font-size: 26px !important;
+      letter-spacing: -0.8px !important;
+    }
+    .rich-h3 {
+      font-size: 20px !important;
+    }
+
+    /* Section headings */
+    .section h2[style*="font-size: 32px"] {
+      font-size: 24px !important;
+    }
+
+    /* Image cards */
+    .container .w-full.aspect-video {
+      aspect-ratio: 4/3 !important;
+    }
+
+    /* More Projects grid */
+    .more-grid {
+      grid-template-columns: 1fr !important;
+    }
+    .more-card {
+      height: 240px !important;
+    }
+    .more-overlay {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+
+    /* More Projects heading */
+    .section h2[style*="font-size: 56px"] {
+      font-size: 36px !important;
+      letter-spacing: -1.5px !important;
+    }
+
+    /* Footer */
+    footer > div {
+      flex-direction: column !important;
+      gap: 16px !important;
+      align-items: flex-start !important;
+    }
+    footer nav {
+      gap: 16px !important;
+      font-size: 16px !important;
+    }
+  }
 </style>
 
 <script>

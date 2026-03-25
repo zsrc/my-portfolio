@@ -66,4 +66,29 @@ const jobs = [
     opacity: 1;
     transform: none;
   }
+
+  @media (max-width: 768px) {
+    #experience .grid {
+      grid-template-columns: 1fr !important;
+      gap: 0 !important;
+    }
+    #experience h2 {
+      font-size: 40px !important;
+      letter-spacing: -1.5px !important;
+      line-height: 1.2 !important;
+      margin-bottom: 16px !important;
+    }
+    #experience .py-7 p:first-child,
+    #experience .py-7 p:nth-child(2) {
+      font-size: 22px !important;
+      letter-spacing: -0.5px !important;
+    }
+    #experience .py-7 p:last-child {
+      font-size: 16px !important;
+    }
+    .cv-btn {
+      width: 100% !important;
+      font-size: 15px !important;
+    }
+  }
 </style>
