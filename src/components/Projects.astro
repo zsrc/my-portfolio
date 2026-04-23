@@ -64,6 +64,23 @@ import { projects } from '../data/projects';
         </a>
       </div>
 
+      <!-- AI section label -->
+      <h2 class="font-medium text-black" style="font-size: 56px; letter-spacing: -2.2px; line-height: 67.2px; margin-top: 24px;">Design Engineering with AI</h2>
+
+      <!-- Row 4: AI placeholder cards -->
+      <div class="bento-row">
+        <a href="/work/brifstack" class="bento-card bento-placeholder" style="flex: 1; height: 480px; background-color: #3A57FC;">
+          <div class="placeholder-inner">
+            <span style="font-family: 'Goudy Bookletter 1911', serif; font-size: 80px; letter-spacing: -0.7px; color: #ffffff; line-height: 1;">BrifStack</span>
+          </div>
+        </a>
+        <a href="/work/spotify-playlist-cover-generator" class="bento-card bento-placeholder" style="flex: 1; height: 480px; background-color: #0a0a0a;">
+          <div class="placeholder-inner">
+            <span style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 64px; letter-spacing: -1.52px; color: #ffffff; line-height: 1; text-align: center; padding: 0 40px;">Spotify Playlist Cover Generator</span>
+          </div>
+        </a>
+      </div>
+
     </div>
   </div>
 </section>
@@ -149,6 +166,30 @@ import { projects } from '../data/projects';
     letter-spacing: -0.3px;
     line-height: 1.4;
     margin: 4px 0 0 0;
+  }
+
+.bento-placeholder {
+    background-color: #f3f4f6;
+    cursor: default;
+  }
+
+  .placeholder-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .placeholder-tag {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 999px;
+    padding: 6px 16px;
   }
 
   @media (max-width: 768px) {

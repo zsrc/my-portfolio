@@ -125,19 +125,33 @@ const moreProjects = projects.filter(p => p.slug !== project.slug).slice(0, 3);
       </div>
     </section>
 
-    <!-- Images 1–3 -->
+    <!-- Images / Videos 1–3 -->
     <section class="py-8">
       <div class="container flex flex-col gap-4">
-        {project.images.slice(0, 3).map((img, i) => (
-          <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden">
-            <img
-              src={img}
-              alt={`${project.title} image ${i + 1}`}
-              class="w-full h-full object-cover"
-              onerror="this.style.display='none'; this.parentElement.style.background='#f3f4f6';"
-            />
-          </div>
-        ))}
+        {project.images.slice(0, 3).map((src, i) => {
+          const isVideo = /\.(mp4|webm|mov)$/i.test(src);
+          return (
+            <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden">
+              {isVideo ? (
+                <video
+                  src={src}
+                  class="w-full h-full object-cover"
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                />
+              ) : (
+                <img
+                  src={src}
+                  alt={`${project.title} image ${i + 1}`}
+                  class="w-full h-full object-cover"
+                  onerror="this.style.display='none'; this.parentElement.style.background='#f3f4f6';"
+                />
+              )}
+            </div>
+          );
+        })}
       </div>
     </section>
 
@@ -156,19 +170,33 @@ const moreProjects = projects.filter(p => p.slug !== project.slug).slice(0, 3);
       </div>
     </section>
 
-    <!-- Images 4–6 -->
+    <!-- Images / Videos 4–6 -->
     <section class="py-8">
       <div class="container flex flex-col gap-4">
-        {project.images.slice(3).map((img, i) => (
-          <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden">
-            <img
-              src={img}
-              alt={`${project.title} image ${i + 4}`}
-              class="w-full h-full object-cover"
-              onerror="this.style.display='none'; this.parentElement.style.background='#f3f4f6';"
-            />
-          </div>
-        ))}
+        {project.images.slice(3).map((src, i) => {
+          const isVideo = /\.(mp4|webm|mov)$/i.test(src);
+          return (
+            <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden">
+              {isVideo ? (
+                <video
+                  src={src}
+                  class="w-full h-full object-cover"
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                />
+              ) : (
+                <img
+                  src={src}
+                  alt={`${project.title} image ${i + 4}`}
+                  class="w-full h-full object-cover"
+                  onerror="this.style.display='none'; this.parentElement.style.background='#f3f4f6';"
+                />
+              )}
+            </div>
+          );
+        })}
       </div>
     </section>
 
