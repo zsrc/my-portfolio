@@ -18,8 +18,11 @@ export interface Project {
   process2: string;
   images: string[];
   outcome: string;
+  ndaNote?: string;
   metaItems?: { label: string; value: string }[];
+  processBlocks?: { type: 'h2' | 'h3' | 'p'; html: string }[];
   process2Blocks?: { type: 'h2' | 'h3' | 'p'; html: string }[];
+  postFirstImageBlocks?: { type: 'h2' | 'h3' | 'p'; html: string }[];
   outcomeBlocks?: { type: 'h2' | 'h3' | 'p'; html: string }[];
 }
 
@@ -153,55 +156,72 @@ export const projects: Project[] = [
     ],
   },
   {
-    title: 'QuizCraft: Designing AI-Powered Learning Experiences',
+    title: 'Little Steps Financing: Designing for the moment when a parent realises they can\'t afford to go back to work.',
     subtitle: 'Interactive learning conversion',
     description: 'Redesigned the core quiz and content creation flow to improve conversion and engagement. Conducted usability testing and iterated on findings to reduce friction significantly.',
     tags: ['UX Research', 'Interaction Design', 'Prototyping'],
-    image: '/images/projects/card-quizcraft.png',
+    image: '/images/projects/card-lsf.png',
     liveUrl: '#',
+    nda: true,
+    ndaNote: 'This case study focuses on process, decisions, and design thinking. Original screens are confidential. The visuals here are my own recreations built to communicate the work accurately.',
     slug: 'quizcraft-ux',
-    gridTitle: 'QuizCraft UX',
-    gridDescription: 'Interactive learning conversion',
-    overview: `QuizCraft is an innovative educational app that transforms static study materials into interactive, AI-generated quizzes. Utilizing advanced artificial intelligence, QuizCraft analyzes texts and images from academic resources to create personalized quizzes tailored to the learning needs of students and scholars. Users have the flexibility to select their preferred question types, such as multiple-choice or other formats, allowing them to customize their learning experience according to their study preferences. Designed for learners at all academic levels, QuizCraft simplifies the study process, making it more engaging and effective for users whether they are preparing for exams or exploring new academic topics.`,
+    gridTitle: 'Little Steps Financing',
+    gridDescription: 'UX case study · Fintech',
+    overview: `There's a moment in every project where the numbers stop being numbers and start being people. For me, on this project, it was reading a survey response from a single mother who had borrowed £500 from a friend to cover her nursery bill. Not a loan. Not a credit card. A friend. Because that was her only option.\n\nThat's the UK childcare market in one sentence. The most expensive in the world. Average nursery costs of £14,300 a year against an average salary of £32,000 - nearly 45% of gross income, for one child, at one nursery. And costs rising 7 times faster than wages since 2008.\n\nLittle Steps Financing was built to change that. A 0% interest, FCA-regulated platform that pays nursery fees directly and collects equal monthly repayments from parents over up to 4 years. No interest. No hidden fees. The idea was simple. The product was not.`,
     contribution: 'UX Design, Interaction Design, Prototyping',
     team: 'Product Designer',
     year: '2024',
-    fullBleedImage: '/images/projects/quizcraft-asset-0.png',
-    process: `Every designer has that one problem that just won't leave them alone. For me, it was watching students burn out not because they lacked discipline, but because their study tools were fundamentally broken — flashcards, PDFs, highlighters. The ritual hadn't changed in decades, and the apps trying to modernize it were mostly doing the same thing with a shinier coat of paint.\n\nI asked myself: what if studying felt less like a chore and more like a conversation with the material? That question became QuizCraft — an AI-powered app that transforms any academic text or image into an interactive, personalized quiz. Not a quiz someone else built. Yours.\n\nStarting with the Problem, Not the Solution\n\nBefore touching a single wireframe, I ran interviews and desk research to make sure I was solving a real problem. The same friction points kept surfacing: manual note-taking was eating hours, existing quiz apps were rigid with no room to adapt, and there was no feedback loop keeping students engaged beyond day one.\n\nThat last one hit me hardest. Motivation is a design problem. If an app doesn't reward engagement, users don't just stop using it — they stop believing it can help them. That became my north star for the entire project.`,
+    fullBleedImage: '/images/projects/lsf-0.png',
+    process: '',
+    processBlocks: [
+      { type: 'h2', html: 'Discovery: What the Research Told Us' },
+      { type: 'p', html: 'When I came onto this project, LSF had already done the hard work of validating demand. A Pollfish survey of 100 UK parents confirmed what the founders suspected: 42% of parents find childcare fees difficult or very difficult to pay. 57% had borrowed to cover costs at some point — a quarter of them from friends or family. When LSF tested the concept of spreading fees at 0% interest, 74% said they\'d opt in. Only 2% said definitely not.' },
+      { type: 'p', html: 'The problem wasn\'t awareness. It wasn\'t even willingness. The problem was that no product like this existed. LSF was the first BNPL application on recurring childcare fees. The first to finance high sums in this category. And shortly into the project, they became one of the few fintechs accepted into the FCA Innovation Sandbox — regulatory validation that set a high credibility bar before a single user had logged in.' },
+      { type: 'p', html: 'That acceptance shaped how I approached every design decision. This wasn\'t a side hustle tool. It was a financial product that needed to earn trust the moment someone landed on it.' },
+
+      { type: 'h2', html: 'The Design Problem: Two Users, One Platform' },
+      { type: 'p', html: 'LSF has two completely different users who never interact directly but are deeply dependent on each other. Parents need financing. Nurseries need reliable payment.' },
+      { type: 'p', html: 'Most products in this space pick one side to design for well. I decided both deserved a first-class experience — and that meant resisting the temptation to build a single dashboard with a role switcher. Instead, I built two fully separate products that shared one design system underneath.' },
+      { type: 'p', html: 'The parent experience lives in sage green — warm, calm, trustworthy. The nursery experience in a dark sidebar with amber accents — operational, businesslike, no-nonsense. Same component library. Different emotional register. Because a parent applying for financing and a nursery operations manager checking their commission report are not doing the same thing when they open an app, even if the app is technically the same one.' },
+      { type: 'p', html: 'The first real sign this was the right call came when LSF signed their first nursery partnership with London Early Years Foundation (LEYF) — one of the largest nursery chains in the city. Having a product that felt purpose-built for nurseries, not bolted on, helped build the trust needed to get that agreement signed.' },
+    ],
     process2Blocks: [
-      { type: 'h2', html: 'Understanding the Competitive Landscape' },
-      { type: 'p', html: 'I benchmarked Eduzen, QuizRise, and ProProfs — studying them not just as products but as experiences. Three gaps kept surfacing: meaningful AI integration (most were using AI as a buzzword, not a feature), real quiz personalization, and any form of gamification that could actually sustain engagement.' },
-      { type: 'p', html: 'These weren\'t small gaps. They were the space between the product and the user — and that\'s where I saw QuizCraft\'s opportunity.' },
+      { type: 'h2', html: 'The Hard Part: The Application Flow' },
+      { type: 'p', html: 'The parent application is where most of the design complexity lived — and where the most important UX decisions were made.' },
+      { type: 'p', html: 'A parent applying for childcare financing is not relaxed. They\'re returning to work after maternity leave, managing tight budgets, and navigating a product that asks them for their salary, bank details, and employer information. The instinct in fintech is to gather everything upfront. I did the opposite.' },
+      { type: 'p', html: 'I split the application into four steps, each with a clear purpose and a deliberate emotional pacing:<br><br><strong>Step 1</strong> — who you are (name, date of birth, relationship status)<br><strong>Step 2</strong> — where you live (address, contact details)<br><strong>Step 3</strong> — the nursery and children<br><strong>Step 4</strong> — financial details (salary, bank account — saved for last, once trust is established)' },
+      { type: 'p', html: 'Every step auto-saves. If a parent gets interrupted by their child mid-form — and they will — they come back to a resume banner, not a blank page. The progress bar shows percentage completed, not steps remaining. These are small things. They add up.' },
+      { type: 'p', html: 'Step 3 is where the real complexity was.' },
+      { type: 'p', html: 'Most parents have one child. Some have two at the same nursery. Some have two at different nurseries, on different schedules, with different fee structures. The application needed to handle all of this — and the repayment schedule calculation needed to update in real time as children were added or removed.' },
+      { type: 'p', html: 'I built Step 3 around a repeatable child card. Each card captures the child\'s name, nursery, age, days per week, monthly fee, and payment start month. A parent with one child sees one card. They can add another with a single tap — and when they do, the combined monthly repayment at the bottom of the screen recalculates immediately. Not after they submit. Not on the next page. Right there, before they decide whether to proceed.' },
+      { type: 'p', html: 'There\'s also a rule that had to be surfaced carefully: if a returning parent reduces the number of days compared to their previous agreement, the system flags it with an inline warning before they advance. This is a business rule, but the UX challenge was making it feel informative rather than punitive. It\'s a nudge, not a blocker.' },
+      { type: 'p', html: 'The 30-day processing rule was similar. FCA regulations mean applications can\'t be processed immediately. Rather than hiding this in terms and conditions or letting parents select a start date and hit an error, the date picker simply disables dates within 30 days of today. A tooltip explains why. Transparency as trust, not transparency as bureaucracy.' },
 
-      { type: 'h2', html: 'Designing for Real People, Not Hypothetical Users' },
-      { type: 'p', html: 'I built three personas as genuine anchors for every decision. Alex, the independent learner, pushed me to design depth — custom quizzes, performance analytics, fine-grained control. Emily, the social learner, made me fight for collaborative modes and gamified paths. Olivia, the traditional student, was the reason I kept pushing for simpler onboarding and clearer UI language.' },
-      { type: 'p', html: 'Designing for all three at once forced me to hold two things in tension: simplicity for the newcomer and depth for the power user. It\'s one of the hardest balancing acts in product design — and it made the end result far stronger than designing for a single ideal user would have.' },
-
-      { type: 'h2', html: 'Deciding What to Build First' },
-      { type: 'p', html: 'With more feature ideas than any MVP could hold, I used the RICE framework — Reach, Impact, Confidence, Effort — to make decisions I could defend. Top priorities were clear: AI-generated quizzes, instant feedback, progress tracking, and a frictionless interface. Mid-tier features like gamification and spaced repetition earned their spot as the key drivers of long-term retention.' },
-      { type: 'p', html: 'Ambitious ideas like AR/VR and LMS integrations were deprioritized — not abandoned, but honestly evaluated. A beautiful feature that takes months to build and barely moves the needle is not a good design decision. This is where product thinking and design thinking have to work together.' },
-
-      { type: 'h2', html: 'Mapping the Journey from Curious to Committed' },
-      { type: 'p', html: 'I mapped the full experience for each persona — from first discovery all the way to loyal, habitual use. What struck me was how much shared emotional territory existed across three very different people: a confident onboarding, an "aha" moment with the AI, reasons to go deeper, and then — critically — a reason to stay.' },
-      { type: 'p', html: 'The user flows that came out of this weren\'t just diagrams. They were a blueprint for screen sequencing, the timing of prompts, and the moments where the product needed to either surprise the user or simply get out of their way.' },
+      { type: 'h2', html: 'The Joint Application Flow' },
+      { type: 'p', html: 'One of the most nuanced flows in the product is the joint application.' },
+      { type: 'p', html: 'When a parent selects "Joint applicant" and submits, their co-applicant receives a separate email with a unique link to their own form. This was important to get right for two reasons.' },
+      { type: 'p', html: 'First, the primary and co-applicants may not be in the same room, or even in agreement about the details. The co-applicant\'s form shows them the nursery name, fee breakdown, and proposed repayment schedule — all read-only. They can see exactly what they\'re signing up for. They can\'t change it. This protects both parties and avoids the kind of quiet friction that happens when financial decisions get made for someone rather than with them.' },
+      { type: 'p', html: 'Second, the co-applicant\'s bank account is only used as a fallback — if the primary applicant\'s direct debit fails, the nominated co-applicant account is tried. I made sure this was explained in plain language at the point of entry, because nothing destroys trust in a financial product faster than a surprise deduction from an account someone didn\'t expect to be touched.' },
+      { type: 'p', html: 'Once both forms are submitted, both accounts move to "Under Review" status simultaneously. The shared transparency was intentional: it mirrors the shared commitment.' },
     ],
     images: [
-      '/images/projects/quizcraft-asset-5.png',
-      '/images/projects/quizcraft-asset-6.png',
-      '/images/projects/quizcraft-asset-7.png',
-      '/images/projects/quizcraft-asset-8.png',
-      '/images/projects/quizcraft-asset-9.png',
-      '/images/projects/quizcraft-asset-10.png',
-      '/images/projects/quizcraft-asset-11.png',
+      '/images/projects/lsf-8.png',
+      '/images/projects/lsf-2.png',
+      '/images/projects/lsf-3.png',
+      '/images/projects/lsf-4.png',
+      '/images/projects/lsf-5.png',
+      '/images/projects/lsf-6.png',
+      '/images/projects/lsf-7.png',
     ],
     outcomeBlocks: [
-      { type: 'h2', html: 'What Came Out the Other Side' },
-      { type: 'p', html: 'The low-fidelity prototype validated that core flows were intuitive and the value proposition landed clearly. One piece I was particularly proud of was the admin dashboard — a late addition that addressed the needs of educators and platform managers. For anyone thinking about EdTech adoption at an institutional level, that layer of oversight and control matters enormously.' },
-      { type: 'p', html: 'The prioritized feature set addressed both functional needs — quiz generation, analytics — and the emotional drivers of personalization and motivation. The result was a product that felt considered at every level, not just built.' },
+      { type: 'h2', html: 'What Shipped' },
+      { type: 'p', html: 'By the time the pilot went live, LSF had real parents making real payments across 5 LEYF nurseries in London. That\'s the moment I think about when someone asks me what this project was. Not the design system. Not the component library. Not the Figma file. Real parents. Real nurseries. Real payments.' },
+      { type: 'p', html: 'Getting there required a product that worked for both sides without either feeling like an afterthought. It required a registration flow that didn\'t lose people at the bank details step. It required a repayment calculator that updated in real time as families added children. And it required a joint application process that two adults could move through independently without it becoming a source of tension.' },
 
-      { type: 'h2', html: 'What This Project Taught Me' },
-      { type: 'p', html: 'QuizCraft reinforced something I keep coming back to: <strong>engagement is not a feature, it\'s an architecture.</strong> You don\'t solve for retention by adding a badge system at the end — you design for it from the first frame of your journey map. Frameworks like RICE aren\'t creativity killers; they\'re clarity tools that help you make the case for your decisions to stakeholders, developers, and yourself.' },
-      { type: 'p', html: 'Most personally: designing for Alex, Emily, and Olivia taught me that the best design isn\'t the one that works perfectly for one ideal user. It\'s the one that holds together across real human diversity — meeting people where they are, and guiding them toward where they want to go.' },
+      { type: 'h2', html: 'What I\'d Do Differently' },
+      { type: 'p', html: 'I\'d test the multi-child flow with real parents earlier. The add-child interaction and the live cost recalculation felt right on screen — but there\'s a version of this where someone with two children at different nurseries gets confused about which card applies to which child. I\'d want to watch that live before shipping it with confidence.' },
+      { type: 'p', html: 'I\'d also run a formal accessibility pass on the status badge colours. The amber-on-white combination for pending states sits close to the WCAG threshold. I have a suspicion, not a certainty. That needs to be a certainty.' },
+      { type: 'p', html: 'But none of that changes the core of what this project was: a real financial product, built for people who needed it, shipped to real users. That\'s the job. We did it.' },
     ],
   },
   {
