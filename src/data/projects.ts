@@ -164,7 +164,7 @@ export const projects: Project[] = [
     liveUrl: '#',
     nda: true,
     ndaNote: 'This case study focuses on process, decisions, and design thinking. Original screens are confidential. The visuals here are my own recreations built to communicate the work accurately.',
-    slug: 'quizcraft-ux',
+    slug: 'lsf-ux',
     gridTitle: 'Little Steps Financing',
     gridDescription: 'UX case study · Fintech',
     overview: `There's a moment in every project where the numbers stop being numbers and start being people. For me, on this project, it was reading a survey response from a single mother who had borrowed £500 from a friend to cover her nursery bill. Not a loan. Not a credit card. A friend. Because that was her only option.\n\nThat's the UK childcare market in one sentence. The most expensive in the world. Average nursery costs of £14,300 a year against an average salary of £32,000 - nearly 45% of gross income, for one child, at one nursery. And costs rising 7 times faster than wages since 2008.\n\nLittle Steps Financing was built to change that. A 0% interest, FCA-regulated platform that pays nursery fees directly and collects equal monthly repayments from parents over up to 4 years. No interest. No hidden fees. The idea was simple. The product was not.`,
