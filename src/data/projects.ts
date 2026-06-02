@@ -1,3 +1,9 @@
+export type RichBlock =
+  | { type: 'h2' | 'h3' | 'p'; html: string }
+  | { type: 'image'; src: string; caption?: string }
+  | { type: 'side-by-side'; left: string; right: string; caption?: string }
+  | { type: 'grid-2x2'; images: [string, string, string, string]; caption?: string };
+
 export interface Project {
   title: string;
   subtitle: string;
@@ -20,10 +26,10 @@ export interface Project {
   outcome: string;
   ndaNote?: string;
   metaItems?: { label: string; value: string }[];
-  processBlocks?: { type: 'h2' | 'h3' | 'p'; html: string }[];
-  process2Blocks?: { type: 'h2' | 'h3' | 'p'; html: string }[];
-  postFirstImageBlocks?: { type: 'h2' | 'h3' | 'p'; html: string }[];
-  outcomeBlocks?: { type: 'h2' | 'h3' | 'p'; html: string }[];
+  processBlocks?: RichBlock[];
+  process2Blocks?: RichBlock[];
+  postFirstImageBlocks?: RichBlock[];
+  outcomeBlocks?: RichBlock[];
 }
 
 const lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
@@ -167,61 +173,69 @@ export const projects: Project[] = [
     slug: 'lsf-ux',
     gridTitle: 'Little Steps Financing',
     gridDescription: 'UX case study · Fintech',
-    overview: `There's a moment in every project where the numbers stop being numbers and start being people. For me, on this project, it was reading a survey response from a single mother who had borrowed £500 from a friend to cover her nursery bill. Not a loan. Not a credit card. A friend. Because that was her only option.\n\nThat's the UK childcare market in one sentence. The most expensive in the world. Average nursery costs of £14,300 a year against an average salary of £32,000 - nearly 45% of gross income, for one child, at one nursery. And costs rising 7 times faster than wages since 2008.\n\nLittle Steps Financing was built to change that. A 0% interest, FCA-regulated platform that pays nursery fees directly and collects equal monthly repayments from parents over up to 4 years. No interest. No hidden fees. The idea was simple. The product was not.`,
+    overview: `There's a moment in every project where the numbers stop being numbers and start being people. For me, it was reading a survey response from a single mother who had borrowed £500 from a friend to cover her nursery bill. Not a loan. Not a credit card. A friend. Because that was her only option.\n\nThat's the UK childcare market in one sentence. Average nursery costs of £14,300 a year against an average salary of £32,000 - nearly 45% of gross income, for one child. Costs rising 7 times faster than wages since 2008. Little Steps Financing was built to change that: a 0% interest, FCA-regulated platform that pays nursery fees directly and collects equal monthly repayments from parents over up to 4 years.\n\nThe idea was simple. The product was not.`,
     contribution: 'UX Design, Interaction Design, Prototyping',
     team: 'Product Designer',
     year: '2024',
     fullBleedImage: '/images/projects/lsf-0.png',
     process: '',
     processBlocks: [
-      { type: 'h2', html: 'Discovery: What the Research Told Us' },
-      { type: 'p', html: 'When I came onto this project, LSF had already done the hard work of validating demand. A Pollfish survey of 100 UK parents confirmed what the founders suspected: 42% of parents find childcare fees difficult or very difficult to pay. 57% had borrowed to cover costs at some point — a quarter of them from friends or family. When LSF tested the concept of spreading fees at 0% interest, 74% said they\'d opt in. Only 2% said definitely not.' },
-      { type: 'p', html: 'The problem wasn\'t awareness. It wasn\'t even willingness. The problem was that no product like this existed. LSF was the first BNPL application on recurring childcare fees. The first to finance high sums in this category. And shortly into the project, they became one of the few fintechs accepted into the FCA Innovation Sandbox — regulatory validation that set a high credibility bar before a single user had logged in.' },
-      { type: 'p', html: 'That acceptance shaped how I approached every design decision. This wasn\'t a side hustle tool. It was a financial product that needed to earn trust the moment someone landed on it.' },
+      { type: 'h2', html: 'Discovery' },
+      { type: 'p', html: 'When I joined the project, LSF had already validated demand. A Pollfish survey of 100 UK parents confirmed what the founders suspected: 42% find childcare fees difficult or very difficult to pay. 57% had borrowed to cover costs at some point — a quarter of them from friends or family. When LSF tested the concept of spreading fees at 0% interest, 74% said they\'d opt in.' },
+      { type: 'p', html: 'The problem wasn\'t awareness. It was that no product like this existed. LSF was the first BNPL application on recurring childcare fees — and shortly into the project, one of the few fintechs accepted into the FCA Innovation Sandbox. That regulatory validation set a credibility bar before a single user had logged in, and it shaped every design decision that followed.' },
 
       { type: 'h2', html: 'The Design Problem: Two Users, One Platform' },
-      { type: 'p', html: 'LSF has two completely different users who never interact directly but are deeply dependent on each other. Parents need financing. Nurseries need reliable payment.' },
-      { type: 'p', html: 'Most products in this space pick one side to design for well. I decided both deserved a first-class experience — and that meant resisting the temptation to build a single dashboard with a role switcher. Instead, I built two fully separate products that shared one design system underneath.' },
-      { type: 'p', html: 'The parent experience lives in sage green — warm, calm, trustworthy. The nursery experience in a dark sidebar with amber accents — operational, businesslike, no-nonsense. Same component library. Different emotional register. Because a parent applying for financing and a nursery operations manager checking their commission report are not doing the same thing when they open an app, even if the app is technically the same one.' },
-      { type: 'p', html: 'The first real sign this was the right call came when LSF signed their first nursery partnership with London Early Years Foundation (LEYF) — one of the largest nursery chains in the city. Having a product that felt purpose-built for nurseries, not bolted on, helped build the trust needed to get that agreement signed.' },
+      { type: 'p', html: 'LSF has two completely different users who never interact directly but are deeply dependent on each other. Parents need financing. Nurseries need to trust they\'ll be paid.' },
+      { type: 'p', html: 'Most products in this space design for one side. I decided both deserved a first-class experience — and that meant resisting the temptation to build a single dashboard with a role switcher. The architecture diagram below shows the decision made concrete: two completely separate products, each with their own entry point, navigation, and emotional register, sharing one backend infrastructure underneath.' },
+      { type: 'p', html: 'The orange branch is the parent product. The dark branch is the nursery product. They diverge immediately from the marketing landing page and never visually overlap — but they share the same status model, the same notification system, and the same payment logic. Same skeleton. Different skin.' },
+      { type: 'image', src: '/images/projects/lsf-architecture.png', caption: '03 — UX Architecture: two products, one shared infrastructure' },
+      { type: 'p', html: 'The parent experience is warm, calm, trustworthy. The nursery experience is operational and businesslike. Because a parent applying for childcare financing and a nursery operations manager reviewing their payment pipeline are not doing the same thing, even if they\'re technically in the same system.' },
+      { type: 'p', html: 'The first real sign this was the right call came when LSF signed their first nursery partnership with LEYF — one of the largest nursery chains in London. Having a product that felt purpose-built for nurseries, not bolted on, helped build the trust to get that agreement signed.' },
+      { type: 'image', src: '/images/projects/lsf-8.png' },
+      { type: 'side-by-side', left: '/images/projects/lsf-2.png', right: '/images/projects/lsf-3.png', caption: 'Parent dashboard (left) · Nursery dashboard (right)' },
+      { type: 'h2', html: 'THE APPLICATION FLOW' },
+      { type: 'p', html: 'The parent application is where most of the design complexity lived — and where the most consequential UX decisions were made. Flow A shows the complete first-time journey: nine steps from marketing landing page to authenticated dashboard.' },
+      { type: 'p', html: 'A parent applying for childcare financing is not relaxed. They\'re returning to work, managing tight budgets, and navigating a product that asks for their salary, bank details, and employer information. The instinct in fintech is to ask for everything upfront. I did the opposite.' },
+      { type: 'p', html: 'The four-step form is structured around deliberate emotional pacing. Steps A2 and A3 gather identity and contact — low stakes, fast to complete. A4 is the First Financial Ask: where the parent selects their nursery, their child, and the number of days they need financed. Only then, at A5, do we ask for salary and bank details. By that point, the parent already knows what the product is for and what they\'ll get from it.' },
+      { type: 'p', html: 'A6 — Review &amp; Schedule — is the Key Trust Moment. This is where a stacked bar chart shows exactly how repayments break down month by month, per child. The total is visible before they commit to anything. Not on a confirmation screen. Not in a PDF sent afterward. Right there, before they click submit.' },
+      { type: 'p', html: 'Every step auto-saves. If a parent gets interrupted — and they will — they return to a resume banner, not a blank form.' },
+      { type: 'image', src: '/images/projects/lsf-flow-a.png', caption: 'Flow A — First Registration & Application · 9 steps · Two key trust moments' },
+      { type: 'h2', html: 'THE RETURNING PARENT' },
+      { type: 'p', html: 'Flow B addresses a problem most fintech products handle poorly: what happens on the second application.' },
+      { type: 'p', html: 'For returning parents, the form is largely pre-filled — shown in the diagram with lighter-shaded boxes. Personal details and contact details come back automatically, editable but confirmed with a single tap. The nursery fees step, however, is always blank. A new month means new schedules, new children, potentially new nurseries.' },
+      { type: 'p', html: 'The dashed box at Step 4 represents the financial details — pre-filled for the first and second applications, then cleared on the third and beyond. This was a deliberate policy decision, made visible through the UI rather than buried in terms. If a returning parent selects fewer financing days than their previous agreement, the system flags it with an inline warning before they advance. A nudge, not a blocker. Business rule made human.' },
+      { type: 'image', src: '/images/projects/lsf-flow-b.png', caption: 'Flow B — Returning Application · Pre-filled state logic' },
+      { type: 'h2', html: 'THE JOINT APPLICATION' },
+      { type: 'p', html: 'Flow C is the most structurally unusual flow in the product, and the diagram shows why: it\'s the only one that branches.' },
+      { type: 'p', html: 'When a parent selects "Joint applicant" and submits, their co-applicant receives a separate email with a unique link to their own form. The orange elbow connector in the diagram shows the moment the primary application forks — C2 triggers the system email, and two parallel processes begin.' },
+      { type: 'p', html: 'The co-applicant path (C3 and C4) runs independently. The nursery section is read-only for the co-applicant: they can see exactly what they\'re signing up for, but can\'t change it. This protects both parties and prevents the quiet friction that happens when financial decisions get made for someone rather than with them.' },
+      { type: 'p', html: 'C4 captures the co-applicant\'s bank account — used only as a fallback if the primary applicant\'s direct debit fails. The diagram shows this path reconnecting to C5 (Confirmation) once both parties have completed their forms. At that point, both accounts enter the same status simultaneously: Pending review. The shared status was intentional. It mirrors the shared commitment.' },
+      { type: 'image', src: '/images/projects/lsf-flow-c.png', caption: 'Flow C — Joint Application · Branching co-applicant path' },
+      { type: 'grid-2x2', images: ['/images/projects/lsf-4.png', '/images/projects/lsf-5.png', '/images/projects/lsf-6.png', '/images/projects/lsf-7.png'], caption: 'Application screens — form steps, child card, repayment schedule, status screen' },
+      { type: 'h2', html: 'NURSERY ONBOARDING' },
+      { type: 'p', html: 'Flow D sits on the other side of the platform entirely. Where the parent flow is built around trust and emotional pacing, the nursery flow is built around a hard operational reality: nurseries cannot self-activate. LSF completes the setup manually before login credentials are issued.' },
+      { type: 'p', html: 'That creates D4 — the dead zone. A dashed box in the diagram, annotated as a manual handoff. A nursery that submits their registration form enters a holding state with no visible progress, no ETA, and no way to chase. The UX response was clear email communication at every transition and a holding state screen that tells the nursery manager exactly what happens next and when.' },
+      { type: 'image', src: '/images/projects/lsf-flow-d.png', caption: 'Flow D — Nursery Onboarding · Admin-assisted · D4 manual handoff' },
+      { type: 'h2', html: 'WHAT EACH USER NEEDS TO SEE' },
+      { type: 'p', html: 'The hierarchy diagram shows how dashboard content was structured for both user types — not from what\'s technically easiest to surface, but from what each persona needs at different frequencies.' },
+      { type: 'p', html: 'For Agnes (the parent), T1 is immediate: next payment amount, due date, application status badge. Visible without scrolling. T2 is the monitoring layer — balance, repayment schedule, installment chart — consulted when making financial decisions. T3 is the reference layer: history, PDFs, archive. Rarely needed, but must be findable.' },
+      { type: 'p', html: 'For Irina (the nursery manager), T1 answers one question: are we being paid? T2 is cash flow planning: upcoming payment dates, parent-by-parent status, monthly trend. T3 is the accounting layer: invoice archives, CSV exports, settings.' },
+      { type: 'p', html: 'Neither T3 layer is buried. But they don\'t compete for attention with the things people actually need every time they open the app.' },
+      { type: 'image', src: '/images/projects/lsf-info-hierarchy.png', caption: '05 — Information Hierarchy · Three tiers · Parent & Nursery dashboards' },
+      { type: 'h2', html: 'THE STATUS SYSTEM' },
+      { type: 'p', html: 'Everything in this product — every agreement, every payment, every application — resolves to one of four states: Pending, Active, Ceased, or Released.' },
+      { type: 'p', html: 'Every application enters as Pending. Manual review moves it to Active (approved) or Ceased (declined or terminated). Active agreements reach Released when payment completes the cycle.' },
+      { type: 'p', html: 'Colour is used once and consistently: amber for Pending, green for Active, red for Ceased, blue for Released. Red appears here, and only here — it\'s not used for warnings, validation errors, or emphasis anywhere else. When a parent or nursery manager sees red, it means exactly one thing.' },
+      { type: 'p', html: 'Both parents and nurseries see the same four states in their respective dashboards. When an LSF team member calls a nursery to discuss a payment, they\'re speaking the same language as the UI. Status is a shared vocabulary, not a technical artefact.' },
+      { type: 'image', src: '/images/projects/lsf-status-system.png', caption: '06 — Status System · 4 states · Consistent across both products' },
     ],
-    process2Blocks: [
-      { type: 'h2', html: 'The Hard Part: The Application Flow' },
-      { type: 'p', html: 'The parent application is where most of the design complexity lived — and where the most important UX decisions were made.' },
-      { type: 'p', html: 'A parent applying for childcare financing is not relaxed. They\'re returning to work after maternity leave, managing tight budgets, and navigating a product that asks them for their salary, bank details, and employer information. The instinct in fintech is to gather everything upfront. I did the opposite.' },
-      { type: 'p', html: 'I split the application into four steps, each with a clear purpose and a deliberate emotional pacing:<br><br><strong>Step 1</strong> — who you are (name, date of birth, relationship status)<br><strong>Step 2</strong> — where you live (address, contact details)<br><strong>Step 3</strong> — the nursery and children<br><strong>Step 4</strong> — financial details (salary, bank account — saved for last, once trust is established)' },
-      { type: 'p', html: 'Every step auto-saves. If a parent gets interrupted by their child mid-form — and they will — they come back to a resume banner, not a blank page. The progress bar shows percentage completed, not steps remaining. These are small things. They add up.' },
-      { type: 'p', html: 'Step 3 is where the real complexity was.' },
-      { type: 'p', html: 'Most parents have one child. Some have two at the same nursery. Some have two at different nurseries, on different schedules, with different fee structures. The application needed to handle all of this — and the repayment schedule calculation needed to update in real time as children were added or removed.' },
-      { type: 'p', html: 'I built Step 3 around a repeatable child card. Each card captures the child\'s name, nursery, age, days per week, monthly fee, and payment start month. A parent with one child sees one card. They can add another with a single tap — and when they do, the combined monthly repayment at the bottom of the screen recalculates immediately. Not after they submit. Not on the next page. Right there, before they decide whether to proceed.' },
-      { type: 'p', html: 'There\'s also a rule that had to be surfaced carefully: if a returning parent reduces the number of days compared to their previous agreement, the system flags it with an inline warning before they advance. This is a business rule, but the UX challenge was making it feel informative rather than punitive. It\'s a nudge, not a blocker.' },
-      { type: 'p', html: 'The 30-day processing rule was similar. FCA regulations mean applications can\'t be processed immediately. Rather than hiding this in terms and conditions or letting parents select a start date and hit an error, the date picker simply disables dates within 30 days of today. A tooltip explains why. Transparency as trust, not transparency as bureaucracy.' },
-
-      { type: 'h2', html: 'The Joint Application Flow' },
-      { type: 'p', html: 'One of the most nuanced flows in the product is the joint application.' },
-      { type: 'p', html: 'When a parent selects "Joint applicant" and submits, their co-applicant receives a separate email with a unique link to their own form. This was important to get right for two reasons.' },
-      { type: 'p', html: 'First, the primary and co-applicants may not be in the same room, or even in agreement about the details. The co-applicant\'s form shows them the nursery name, fee breakdown, and proposed repayment schedule — all read-only. They can see exactly what they\'re signing up for. They can\'t change it. This protects both parties and avoids the kind of quiet friction that happens when financial decisions get made for someone rather than with them.' },
-      { type: 'p', html: 'Second, the co-applicant\'s bank account is only used as a fallback — if the primary applicant\'s direct debit fails, the nominated co-applicant account is tried. I made sure this was explained in plain language at the point of entry, because nothing destroys trust in a financial product faster than a surprise deduction from an account someone didn\'t expect to be touched.' },
-      { type: 'p', html: 'Once both forms are submitted, both accounts move to "Under Review" status simultaneously. The shared transparency was intentional: it mirrors the shared commitment.' },
-    ],
-    images: [
-      '/images/projects/lsf-8.png',
-      '/images/projects/lsf-2.png',
-      '/images/projects/lsf-3.png',
-      '/images/projects/lsf-4.png',
-      '/images/projects/lsf-5.png',
-      '/images/projects/lsf-6.png',
-      '/images/projects/lsf-7.png',
-    ],
+    images: [],
     outcomeBlocks: [
       { type: 'h2', html: 'What Shipped' },
       { type: 'p', html: 'By the time the pilot went live, LSF had real parents making real payments across 5 LEYF nurseries in London. That\'s the moment I think about when someone asks me what this project was. Not the design system. Not the component library. Not the Figma file. Real parents. Real nurseries. Real payments.' },
       { type: 'p', html: 'Getting there required a product that worked for both sides without either feeling like an afterthought. It required a registration flow that didn\'t lose people at the bank details step. It required a repayment calculator that updated in real time as families added children. And it required a joint application process that two adults could move through independently without it becoming a source of tension.' },
+      { type: 'p', html: 'One component library, two products, one coherent experience — for the parent who just needs to know their next payment date, and for the nursery manager who needs to know Friday\'s collection will clear.' },
 
-      { type: 'h2', html: 'What I\'d Do Differently' },
-      { type: 'p', html: 'I\'d test the multi-child flow with real parents earlier. The add-child interaction and the live cost recalculation felt right on screen — but there\'s a version of this where someone with two children at different nurseries gets confused about which card applies to which child. I\'d want to watch that live before shipping it with confidence.' },
-      { type: 'p', html: 'I\'d also run a formal accessibility pass on the status badge colours. The amber-on-white combination for pending states sits close to the WCAG threshold. I have a suspicion, not a certainty. That needs to be a certainty.' },
-      { type: 'p', html: 'But none of that changes the core of what this project was: a real financial product, built for people who needed it, shipped to real users. That\'s the job. We did it.' },
     ],
   },
   {

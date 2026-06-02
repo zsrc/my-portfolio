@@ -11,6 +11,39 @@ export function getStaticPaths() {
 
 const { project } = Astro.props;
 const moreProjects = projects.filter(p => p.slug !== project.slug).slice(0, 3);
+
+// Split processBlocks into pre-visual text and visual+trailing segments
+type VisualBlock =
+  | { type: 'image'; src: string; caption?: string }
+  | { type: 'side-by-side'; left: string; right: string; caption?: string }
+  | { type: 'grid-2x2'; images: [string, string, string, string]; caption?: string };
+const isVisual = (b: { type: string }) => b.type === 'image' || b.type === 'side-by-side' || b.type === 'grid-2x2';
+
+const processPreImageBlocks = project.processBlocks
+  ? (() => {
+      const firstIdx = project.processBlocks!.findIndex(isVisual);
+      return firstIdx === -1 ? project.processBlocks! : project.processBlocks!.slice(0, firstIdx);
+    })()
+  : null;
+
+const processImageSegments = project.processBlocks
+  ? (() => {
+      const segments: { visual: VisualBlock; trailing: { type: 'h2' | 'h3' | 'p'; html: string }[] }[] = [];
+      const blocks = project.processBlocks!;
+      for (let i = 0; i < blocks.length; i++) {
+        const b = blocks[i];
+        if (isVisual(b)) {
+          const trailing: { type: 'h2' | 'h3' | 'p'; html: string }[] = [];
+          while (i + 1 < blocks.length && !isVisual(blocks[i + 1])) {
+            i++;
+            trailing.push(blocks[i] as { type: 'h2' | 'h3' | 'p'; html: string });
+          }
+          segments.push({ visual: b as VisualBlock, trailing });
+        }
+      }
+      return segments;
+    })()
+  : [];
 ---
 
 <Layout title={`${project.title} — Zehra`}>
@@ -117,7 +150,7 @@ const moreProjects = projects.filter(p => p.slug !== project.slug).slice(0, 3);
           </div>
         </div>
         <div class="rich-body">
-          {project.processBlocks ? project.processBlocks.map((block) => {
+          {processPreImageBlocks ? processPreImageBlocks.map((block) => {
             if (block.type === 'h2') return <h2 class="rich-h2" set:html={block.html} />;
             if (block.type === 'h3') return <h3 class="rich-h3" set:html={block.html} />;
             return <p class="rich-p" set:html={block.html} />;
@@ -130,7 +163,48 @@ const moreProjects = projects.filter(p => p.slug !== project.slug).slice(0, 3);
       </div>
     </section>
 
+    <!-- Process block visuals — full width, with trailing text -->
+    {processImageSegments.map((seg) => (
+      <section class="py-8">
+        <div class="container flex flex-col gap-3">
+          {seg.visual.type === 'image' ? (
+            <div class="w-full bg-gray-100 rounded-xl overflow-hidden">
+              <img src={seg.visual.src} alt={seg.visual.caption ?? ''} class="w-full block" />
+            </div>
+          ) : seg.visual.type === 'side-by-side' ? (
+            <div class="side-by-side-grid">
+              <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden">
+                <img src={seg.visual.left} alt="" class="w-full h-full object-cover" />
+              </div>
+              <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden">
+                <img src={seg.visual.right} alt="" class="w-full h-full object-cover" />
+              </div>
+            </div>
+          ) : (
+            <div class="grid-2x2-grid">
+              {seg.visual.images.map((src) => (
+                <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden">
+                  <img src={src} alt="" class="w-full h-full object-cover" />
+                </div>
+              ))}
+            </div>
+          )}
+          {seg.visual.caption && <p class="rich-caption" style="padding: 0 4px;">{seg.visual.caption}</p>}
+          {seg.trailing.length > 0 && (
+            <div class="rich-body" style="margin: 24px auto 0;">
+              {seg.trailing.map((block) => {
+                if (block.type === 'h2') return <h2 class="rich-h2" set:html={block.html} />;
+                if (block.type === 'h3') return <h3 class="rich-h3" set:html={block.html} />;
+                return <p class="rich-p" set:html={block.html} />;
+              })}
+            </div>
+          )}
+        </div>
+      </section>
+    ))}
+
     <!-- Image 1 -->
+    {project.images.length > 0 && (
     <section class="py-8">
       <div class="container flex flex-col gap-4">
         {project.images.slice(0, 1).map((src, i) => {
@@ -147,6 +221,7 @@ const moreProjects = projects.filter(p => p.slug !== project.slug).slice(0, 3);
         })}
       </div>
     </section>
+    )}
 
     <!-- Post-first-image blocks (optional) -->
     {project.postFirstImageBlocks && (
@@ -155,6 +230,12 @@ const moreProjects = projects.filter(p => p.slug !== project.slug).slice(0, 3);
           {project.postFirstImageBlocks.map((block) => {
             if (block.type === 'h2') return <h2 class="rich-h2" set:html={block.html} />;
             if (block.type === 'h3') return <h3 class="rich-h3" set:html={block.html} />;
+            if (block.type === 'image') return (
+              <figure class="rich-figure">
+                <img src={block.src} alt={block.caption ?? ''} class="rich-figure-img" />
+                {block.caption && <figcaption class="rich-caption">{block.caption}</figcaption>}
+              </figure>
+            );
             return <p class="rich-p" set:html={block.html} />;
           })}
         </div>
@@ -162,6 +243,7 @@ const moreProjects = projects.filter(p => p.slug !== project.slug).slice(0, 3);
     )}
 
     <!-- Images 2–3 -->
+    {project.images.length > 1 && (
     <section class="py-8">
       <div class="container flex flex-col gap-4">
         {project.images.slice(1, 3).map((src, i) => {
@@ -178,23 +260,33 @@ const moreProjects = projects.filter(p => p.slug !== project.slug).slice(0, 3);
         })}
       </div>
     </section>
+    )}
 
     <!-- Process part 2 -->
-    <section class="section">
-      <div class="container rich-body">
-        {project.process2Blocks ? project.process2Blocks.map((block) => {
-          if (block.type === 'h2') return <h2 class="rich-h2" set:html={block.html} />;
-          if (block.type === 'h3') return <h3 class="rich-h3" set:html={block.html} />;
-          return <p class="rich-p" set:html={block.html} />;
-        }) : (
-          <p class="font-normal" style="font-size: 24px; letter-spacing: -0.7px; line-height: 1.5; color: rgba(0,0,0,0.659);">
-            {project.process2}
-          </p>
-        )}
-      </div>
-    </section>
+    {(project.process2Blocks?.length || project.process2) && (
+      <section class="section">
+        <div class="container rich-body">
+          {project.process2Blocks?.length ? project.process2Blocks.map((block) => {
+            if (block.type === 'h2') return <h2 class="rich-h2" set:html={block.html} />;
+            if (block.type === 'h3') return <h3 class="rich-h3" set:html={block.html} />;
+            if (block.type === 'image') return (
+              <figure class="rich-figure">
+                <img src={block.src} alt={block.caption ?? ''} class="rich-figure-img" />
+                {block.caption && <figcaption class="rich-caption">{block.caption}</figcaption>}
+              </figure>
+            );
+            return <p class="rich-p" set:html={block.html} />;
+          }) : (
+            <p class="font-normal" style="font-size: 24px; letter-spacing: -0.7px; line-height: 1.5; color: rgba(0,0,0,0.659);">
+              {project.process2}
+            </p>
+          )}
+        </div>
+      </section>
+    )}
 
     <!-- Images / Videos 4–6 -->
+    {project.images.length > 3 && (
     <section class="py-8">
       <div class="container flex flex-col gap-4">
         {project.images.slice(3).map((src, i) => {
@@ -223,6 +315,7 @@ const moreProjects = projects.filter(p => p.slug !== project.slug).slice(0, 3);
         })}
       </div>
     </section>
+    )}
 
     <!-- Outcome -->
     <section class="section">
@@ -236,6 +329,12 @@ const moreProjects = projects.filter(p => p.slug !== project.slug).slice(0, 3);
           {project.outcomeBlocks ? project.outcomeBlocks.map((block) => {
             if (block.type === 'h2') return <h2 class="rich-h2" set:html={block.html} />;
             if (block.type === 'h3') return <h3 class="rich-h3" set:html={block.html} />;
+            if (block.type === 'image') return (
+              <figure class="rich-figure">
+                <img src={block.src} alt={block.caption ?? ''} class="rich-figure-img" />
+                {block.caption && <figcaption class="rich-caption">{block.caption}</figcaption>}
+              </figure>
+            );
             return <p class="rich-p" set:html={block.html} />;
           }) : project.outcome.split('\n\n').map((para) => (
             <p class="font-normal" style="font-size: 24px; letter-spacing: -0.7px; line-height: 1.5; color: rgba(0,0,0,0.659);">
@@ -395,6 +494,46 @@ const moreProjects = projects.filter(p => p.slug !== project.slug).slice(0, 3);
 
   .rich-p em {
     font-style: italic;
+  }
+
+  .side-by-side-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .grid-2x2-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  @media (max-width: 640px) {
+    .side-by-side-grid,
+    .grid-2x2-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .rich-figure {
+    margin: 8px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .rich-figure-img {
+    width: 100%;
+    border-radius: 12px;
+    display: block;
+  }
+
+  .rich-caption {
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: rgba(0,0,0,0.4);
+    line-height: 1.5;
   }
 
   /* More Projects grid */
