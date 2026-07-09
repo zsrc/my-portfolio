@@ -12,6 +12,7 @@ export interface Project {
   image: string;
   liveUrl?: string;
   nda?: boolean;
+  archived?: boolean;
   slug: string;
   gridTitle: string;
   gridDescription: string;
@@ -111,6 +112,7 @@ export const projects: Project[] = [
     tags: ['Mobile', 'iOS', 'Android', 'Design System'],
     image: '/images/projects/card-rolla.png',
     liveUrl: '#',
+    archived: true,
     slug: 'rolla-health',
     gridTitle: 'Rolla Health',
     gridDescription: 'Wellness & habit tracking app',

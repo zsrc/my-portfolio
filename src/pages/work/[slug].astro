@@ -10,7 +10,7 @@ export function getStaticPaths() {
 }
 
 const { project } = Astro.props;
-const moreProjects = projects.filter(p => p.slug !== project.slug).slice(0, 3);
+const moreProjects = projects.filter(p => p.slug !== project.slug && !p.archived).slice(0, 3);
 
 // Split processBlocks into pre-visual text and visual+trailing segments
 type VisualBlock =
