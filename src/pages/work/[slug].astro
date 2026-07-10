@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { projects } from '../../data/projects';
+import type { RichBlock } from '../../data/projects';
 
 export function getStaticPaths() {
   return projects.map((project) => ({
@@ -14,7 +15,7 @@ const moreProjects = projects.filter(p => p.slug !== project.slug && !p.archived
 
 // Split processBlocks into pre-visual text and visual+trailing segments
 type VisualBlock =
-  | { type: 'image'; src: string; caption?: string }
+  | { type: 'image'; src: string; caption?: string; fullWidth?: boolean }
   | { type: 'side-by-side'; left: string; right: string; caption?: string }
   | { type: 'grid-2x2'; images: [string, string, string, string]; caption?: string };
 const isVisual = (b: { type: string }) => b.type === 'image' || b.type === 'side-by-side' || b.type === 'grid-2x2';
@@ -28,15 +29,42 @@ const processPreImageBlocks = project.processBlocks
 
 const processImageSegments = project.processBlocks
   ? (() => {
-      const segments: { visual: VisualBlock; trailing: { type: 'h2' | 'h3' | 'p'; html: string }[] }[] = [];
+      const segments: { visual: VisualBlock; trailing: Exclude<RichBlock, { type: 'image' | 'side-by-side' | 'grid-2x2' }>[] }[] = [];
       const blocks = project.processBlocks!;
       for (let i = 0; i < blocks.length; i++) {
         const b = blocks[i];
         if (isVisual(b)) {
-          const trailing: { type: 'h2' | 'h3' | 'p'; html: string }[] = [];
+          const trailing: Exclude<RichBlock, { type: 'image' | 'side-by-side' | 'grid-2x2' }>[] = [];
           while (i + 1 < blocks.length && !isVisual(blocks[i + 1])) {
             i++;
-            trailing.push(blocks[i] as { type: 'h2' | 'h3' | 'p'; html: string });
+            trailing.push(blocks[i] as Exclude<RichBlock, { type: 'image' | 'side-by-side' | 'grid-2x2' }>);
+          }
+          segments.push({ visual: b as VisualBlock, trailing });
+        }
+      }
+      return segments;
+    })()
+  : [];
+
+// Split overviewBlocks the same way, so visuals break out of the 2-col grid and center on the page
+const overviewPreImageBlocks = project.overviewBlocks
+  ? (() => {
+      const firstIdx = project.overviewBlocks!.findIndex(isVisual);
+      return firstIdx === -1 ? project.overviewBlocks! : project.overviewBlocks!.slice(0, firstIdx);
+    })()
+  : null;
+
+const overviewImageSegments = project.overviewBlocks
+  ? (() => {
+      const segments: { visual: VisualBlock; trailing: Exclude<RichBlock, { type: 'image' | 'side-by-side' | 'grid-2x2' }>[] }[] = [];
+      const blocks = project.overviewBlocks!;
+      for (let i = 0; i < blocks.length; i++) {
+        const b = blocks[i];
+        if (isVisual(b)) {
+          const trailing: Exclude<RichBlock, { type: 'image' | 'side-by-side' | 'grid-2x2' }>[] = [];
+          while (i + 1 < blocks.length && !isVisual(blocks[i + 1])) {
+            i++;
+            trailing.push(blocks[i] as Exclude<RichBlock, { type: 'image' | 'side-by-side' | 'grid-2x2' }>);
           }
           segments.push({ visual: b as VisualBlock, trailing });
         }
@@ -109,11 +137,22 @@ const processImageSegments = project.processBlocks
       <div class="container grid gap-16" style="grid-template-columns: 1fr 2fr;">
         <div>
           <div class="border-t border-gray-200 pt-4">
-            <h2 class="font-medium text-black" style="font-size: 32px; letter-spacing: -1px;">Overview</h2>
+            <h2 class="font-medium text-black" style="font-size: 32px; letter-spacing: -1px;">{project.overviewTitle ?? 'Overview'}</h2>
           </div>
         </div>
         <div class="overview-body">
-          {project.overview.split('\n\n').map((para) => (
+          {overviewPreImageBlocks ? overviewPreImageBlocks.map((block) => {
+            if (block.type === 'eyebrow') return <p class="rich-eyebrow" set:html={block.html} />;
+            if (block.type === 'h2') return <h2 class="rich-h2" set:html={block.html} />;
+            if (block.type === 'h3') return <h3 class="rich-h3" set:html={block.html} />;
+            if (block.type === 'callout') return (
+              <div class="rich-callout">
+                <p class="rich-callout-title">{block.title}</p>
+                <p class="rich-callout-body" set:html={block.html} />
+              </div>
+            );
+            return <p class="rich-p" set:html={block.html} />;
+          }) : project.overview.split('\n\n').map((para) => (
             <p class="font-normal" style="font-size: 24px; letter-spacing: -0.7px; line-height: 1.5; color: rgba(0,0,0,0.659);">
               {para}
             </p>
@@ -127,10 +166,58 @@ const processImageSegments = project.processBlocks
       </div>
     </section>
 
+    <!-- Overview block visuals — full width, centered on page -->
+    {overviewImageSegments.map((seg) => (
+      <section class="py-8">
+        <div class="container flex flex-col gap-3" style="align-items: center;">
+          {seg.visual.type === 'image' ? (
+            <div class="w-full bg-gray-100 rounded-xl overflow-hidden" style={seg.visual.fullWidth ? 'margin: 0 auto;' : 'max-width: 860px; margin: 0 auto;'}>
+              <img src={seg.visual.src} alt={seg.visual.caption ?? ''} class="w-full block" />
+            </div>
+          ) : seg.visual.type === 'side-by-side' ? (
+            <div class="side-by-side-grid" style="max-width: 860px; margin: 0 auto; width: 100%;">
+              <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden">
+                <img src={seg.visual.left} alt="" class="w-full h-full object-cover" />
+              </div>
+              <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden">
+                <img src={seg.visual.right} alt="" class="w-full h-full object-cover" />
+              </div>
+            </div>
+          ) : (
+            <div class="grid-2x2-grid" style="max-width: 860px; margin: 0 auto; width: 100%;">
+              {seg.visual.images.map((src) => (
+                <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden">
+                  <img src={src} alt="" class="w-full h-full object-cover" />
+                </div>
+              ))}
+            </div>
+          )}
+          {seg.visual.caption && <p class="rich-caption" style="padding: 0 4px; text-align: center;">{seg.visual.caption}</p>}
+          {seg.trailing.length > 0 && (
+            <div class="rich-body" style="margin: 24px auto 0;">
+              {seg.trailing.map((block) => {
+                if (block.type === 'eyebrow') return <p class="rich-eyebrow" set:html={block.html} />;
+                if (block.type === 'h2') return <h2 class="rich-h2" set:html={block.html} />;
+                if (block.type === 'h3') return <h3 class="rich-h3" set:html={block.html} />;
+                if (block.type === 'callout') return (
+                  <div class="rich-callout">
+                    <p class="rich-callout-title">{block.title}</p>
+                    <p class="rich-callout-body" set:html={block.html} />
+                  </div>
+                );
+                return <p class="rich-p" set:html={block.html} />;
+              })}
+            </div>
+          )}
+        </div>
+      </section>
+    ))}
+
     <!-- Full bleed image -->
+    {project.fullBleedImage && (
     <section class="py-8">
       <div class="container flex flex-col gap-4">
-        <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden">
+        <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden flex items-center justify-center">
           <img
             src={project.fullBleedImage}
             alt={`${project.title} full image`}
@@ -140,8 +227,10 @@ const processImageSegments = project.processBlocks
         </div>
       </div>
     </section>
+    )}
 
     <!-- Process -->
+    {(project.process || project.processBlocks?.length) && (
     <section class="section">
       <div class="container grid gap-16" style="grid-template-columns: 1fr 2fr;">
         <div>
@@ -162,6 +251,7 @@ const processImageSegments = project.processBlocks
         </div>
       </div>
     </section>
+    )}
 
     <!-- Process block visuals — full width, with trailing text -->
     {processImageSegments.map((seg) => (
@@ -193,8 +283,15 @@ const processImageSegments = project.processBlocks
           {seg.trailing.length > 0 && (
             <div class="rich-body" style="margin: 24px auto 0;">
               {seg.trailing.map((block) => {
+                if (block.type === 'eyebrow') return <p class="rich-eyebrow" set:html={block.html} />;
                 if (block.type === 'h2') return <h2 class="rich-h2" set:html={block.html} />;
                 if (block.type === 'h3') return <h3 class="rich-h3" set:html={block.html} />;
+                if (block.type === 'callout') return (
+                  <div class="rich-callout">
+                    <p class="rich-callout-title">{block.title}</p>
+                    <p class="rich-callout-body" set:html={block.html} />
+                  </div>
+                );
                 return <p class="rich-p" set:html={block.html} />;
               })}
             </div>
@@ -210,8 +307,10 @@ const processImageSegments = project.processBlocks
         {project.images.slice(0, 1).map((src, i) => {
           const isVideo = /\.(mp4|webm|mov)$/i.test(src);
           return (
-            <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden">
-              {isVideo ? (
+            <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden flex items-center justify-center">
+              {!src ? (
+                <span class="img-placeholder">Image placeholder</span>
+              ) : isVideo ? (
                 <video src={src} class="w-full h-full object-cover" autoplay muted loop playsinline />
               ) : (
                 <img src={src} alt={`${project.title} image ${i + 1}`} class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.style.background='#f3f4f6';" />
@@ -249,8 +348,10 @@ const processImageSegments = project.processBlocks
         {project.images.slice(1, 3).map((src, i) => {
           const isVideo = /\.(mp4|webm|mov)$/i.test(src);
           return (
-            <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden">
-              {isVideo ? (
+            <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden flex items-center justify-center">
+              {!src ? (
+                <span class="img-placeholder">Image placeholder</span>
+              ) : isVideo ? (
                 <video src={src} class="w-full h-full object-cover" autoplay muted loop playsinline />
               ) : (
                 <img src={src} alt={`${project.title} image ${i + 2}`} class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.style.background='#f3f4f6';" />
@@ -292,8 +393,10 @@ const processImageSegments = project.processBlocks
         {project.images.slice(3).map((src, i) => {
           const isVideo = /\.(mp4|webm|mov)$/i.test(src);
           return (
-            <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden">
-              {isVideo ? (
+            <div class="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden flex items-center justify-center">
+              {!src ? (
+                <span class="img-placeholder">Image placeholder</span>
+              ) : isVideo ? (
                 <video
                   src={src}
                   class="w-full h-full object-cover"
@@ -318,6 +421,7 @@ const processImageSegments = project.processBlocks
     )}
 
     <!-- Outcome -->
+    {(project.outcome || project.outcomeBlocks?.length) && (
     <section class="section">
       <div class="container grid gap-16" style="grid-template-columns: 1fr 2fr;">
         <div>
@@ -344,6 +448,7 @@ const processImageSegments = project.processBlocks
         </div>
       </div>
     </section>
+    )}
 
   </main>
 
@@ -427,6 +532,17 @@ const processImageSegments = project.processBlocks
     gap: 24px;
   }
 
+  .img-placeholder {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 999px;
+    padding: 6px 16px;
+  }
+
   .nda-tag {
     display: inline-block;
     margin-top: 16px;
@@ -457,6 +573,46 @@ const processImageSegments = project.processBlocks
     flex-direction: column;
     gap: 20px;
     max-width: 860px;
+  }
+
+  .rich-eyebrow {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.4);
+    margin-top: 32px;
+    margin-bottom: 0;
+  }
+
+  .rich-callout {
+    background-color: #f3f4f6;
+    border-radius: 16px;
+    padding: 40px;
+    margin-top: 8px;
+  }
+
+  .rich-callout-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0a0a0a;
+    margin: 0 0 16px 0;
+  }
+
+  .rich-callout-body {
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+    line-height: 1.7;
+    color: rgba(0, 0, 0, 0.659);
+    margin: 0;
+  }
+
+  .rich-callout-body strong {
+    color: #0a0a0a;
+    font-weight: 600;
   }
 
   .rich-h2 {
