@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   title?: string;
@@ -23,6 +24,7 @@ const {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500&family=Goudy+Bookletter+1911&family=Inter:wght@700&display=swap" rel="stylesheet" />
     <title>{title}</title>
+    <ClientRouter />
   </head>
   <body>
     <slot />
@@ -51,6 +53,8 @@ const {
     </div>
 
     <script>
+      import { navigate } from 'astro:transitions/client';
+
       const CORRECT_PASSWORD = 'JIuM6,6-J2';
       const SESSION_KEY = 'portfolio_unlocked';
 
@@ -95,8 +99,9 @@ const {
       function attemptUnlock() {
         if (input.value === CORRECT_PASSWORD) {
           sessionStorage.setItem(SESSION_KEY, 'true');
+          const url = pendingUrl;
           closeModal();
-          window.location.href = pendingUrl;
+          navigate(url);
         } else {
           const msg = funnyErrors[Math.floor(Math.random() * funnyErrors.length)];
           errorEl.textContent = msg;
@@ -113,7 +118,10 @@ const {
       backdrop?.addEventListener('click', (e) => { if (e.target === backdrop) closeModal(); });
       input?.addEventListener('keydown', (e) => { if (e.key === 'Enter') attemptUnlock(); });
 
-      // Intercept all work links
+      // Intercept all work links. Registered in the capture phase so this
+      // always runs before ClientRouter's own bubble-phase click listener,
+      // regardless of script order — otherwise ClientRouter would soft-navigate
+      // protected links before we get a chance to call preventDefault().
       document.addEventListener('click', (e) => {
         const anchor = (e.target as Element).closest('a');
         if (!anchor) return;
@@ -121,8 +129,9 @@ const {
         if (!href || !href.startsWith('/work/')) return;
         if (isUnlocked()) return;
         e.preventDefault();
+        e.stopPropagation();
         openModal(href);
-      });
+      }, true);
     </script>
   </body>
 </html>
