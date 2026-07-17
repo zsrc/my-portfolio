@@ -56,7 +56,6 @@ export const projects: Project[] = [
     tags: ['UX Design', 'Design System', 'AI', 'B2B'],
     image: '/images/projects/card-learnpath.png',
     nda: true,
-    archived: true,
     slug: 'learnpath-ai',
     gridTitle: 'LearnPath — AI',
     gridDescription: 'Adaptive learning platform',

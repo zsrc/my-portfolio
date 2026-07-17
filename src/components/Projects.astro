@@ -11,35 +11,46 @@ const visibleProjects = projects.filter((p) => !p.archived);
 
     <div class="bento-wrapper">
 
-      <!-- Row 1: LSF + Rolla stacked on the left, Grow Pharma large on the right -->
+      <!-- Row 1: LearnPath — full width horizontal -->
+      <a href={`/work/${visibleProjects[0].slug}`} class="bento-card bento-featured">
+        <div class="bento-img-wrap">
+          <img src={visibleProjects[0].image} alt={visibleProjects[0].title} class="bento-img" onerror="this.style.display='none'" />
+        </div>
+        <div class="bento-overlay">
+          <p class="bento-title">{visibleProjects[0].title}</p>
+          <p class="bento-desc">{visibleProjects[0].subtitle}</p>
+        </div>
+      </a>
+
+      <!-- Row 2: LSF + Rolla stacked on the left, Grow Pharma large on the right -->
       <div class="bento-row bento-split">
         <div class="bento-col">
-          <a href={`/work/${visibleProjects[0].slug}`} class="bento-card">
+          <a href={`/work/${visibleProjects[1].slug}`} class="bento-card">
             <div class="bento-img-wrap">
-              <img src={visibleProjects[0].image} alt={visibleProjects[0].title} class="bento-img bento-img-contain" onerror="this.style.display='none'" />
+              <img src={visibleProjects[1].image} alt={visibleProjects[1].title} class="bento-img bento-img-contain" onerror="this.style.display='none'" />
             </div>
             <div class="bento-overlay">
               <p class="bento-title">Little Steps Financing: Financing the return to work</p>
-              <p class="bento-desc">{visibleProjects[0].subtitle}</p>
-            </div>
-          </a>
-          <a href={`/work/${visibleProjects[1].slug}`} class="bento-card">
-            <div class="bento-img-wrap">
-              <img src={visibleProjects[1].image} alt={visibleProjects[1].title} class="bento-img" onerror="this.style.display='none'" />
-            </div>
-            <div class="bento-overlay">
-              <p class="bento-title">{visibleProjects[1].title}</p>
               <p class="bento-desc">{visibleProjects[1].subtitle}</p>
             </div>
           </a>
+          <a href={`/work/${visibleProjects[2].slug}`} class="bento-card">
+            <div class="bento-img-wrap">
+              <img src={visibleProjects[2].image} alt={visibleProjects[2].title} class="bento-img" onerror="this.style.display='none'" />
+            </div>
+            <div class="bento-overlay">
+              <p class="bento-title">{visibleProjects[2].title}</p>
+              <p class="bento-desc">{visibleProjects[2].subtitle}</p>
+            </div>
+          </a>
         </div>
-        <a href={`/work/${visibleProjects[2].slug}`} class="bento-card bento-big">
+        <a href={`/work/${visibleProjects[3].slug}`} class="bento-card bento-big">
           <div class="bento-img-wrap">
-            <img src={visibleProjects[2].image} alt={visibleProjects[2].title} class="bento-img" onerror="this.style.display='none'" />
+            <img src={visibleProjects[3].image} alt={visibleProjects[3].title} class="bento-img" onerror="this.style.display='none'" />
           </div>
           <div class="bento-overlay">
-            <p class="bento-title">{visibleProjects[2].title}</p>
-            <p class="bento-desc">{visibleProjects[2].subtitle}</p>
+            <p class="bento-title">{visibleProjects[3].title}</p>
+            <p class="bento-desc">{visibleProjects[3].subtitle}</p>
           </div>
         </a>
       </div>
