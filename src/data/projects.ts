@@ -392,6 +392,7 @@ export const projects: Project[] = [
     overviewBlocks: [
       { type: 'p', html: 'A sports-data company needed a back-office tool for sportsbook operators: the people who create matches, set odds, and decide what players see. Operators aren\'t the end customer here; they\'re the ones running the machine behind the scenes. Nobody had designed for them yet.' },
       { type: 'p', html: 'I took this from a two-page written brief to a fully interactive, WCAG-conscious prototype: eight tools in one console, two core workflows with real business-logic constraints, a working light/dark design system, and a UX process I can actually defend in a design review — not just screens that look finished.' },
+      { type: 'p', html: 'You can check Linedesk live on: <a href="https://linedesk.vercel.app/" target="_blank" rel="noopener noreferrer">https://linedesk.vercel.app/</a>' },
       { type: 'image', src: '/images/projects/01-dashboard-linedesk.jpg', caption: 'Linedesk\'s Dashboard - the operator\'s first screen of the day. Live event count, active markets, the currently-promoted group, and sport coverage at a glance.', fullWidth: true },
     ],
     contribution: 'UX research, IA, interaction design, front-end prototype',
